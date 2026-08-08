@@ -12,16 +12,38 @@ import { useEffect } from 'react';
 import { useAppStore } from './store/useAppStore';
 import { useInstagramData } from './hooks/useInstagramData';
 
+import { getUserByIgId } from './lib/db';
+
 // Pre-seed the token so the app works out of the box
 const PRESET_TOKEN = 'EAAY7lP7B3MQBSBqyN4A9fbfZB0YEI2k6wciJ6XuAkuFgbr7sA8bvOiYGwR3CeTXdJUrBMSkGKVpbczPNRAG9K4QH1AF90c8qbl22ZAWBPnsaJ7OpKXDyzmxuIqsoA1jhhFe2dJZC2ax1QEBCvsVHWgobiJ3VJbtkxshNMDFatUE08wKZAnwTisDWCNUiohQv';
+const IG_USER_ID = '17841410004708818';
 
 export default function App() {
-  const { setAccessToken, accessToken, loadCached, mode } = useAppStore();
+  const { setAccessToken, accessToken, loadCached, mode, setDbUserId } = useAppStore();
   const { refresh, loadFromDB } = useInstagramData();
 
   useEffect(() => {
-    // 1. Try loading from Supabase DB first (instant, no API needed)
-    loadFromDB();
+    const initialize = async () => {
+      let currentDbUserId = useAppStore.getState().dbUserId;
+      
+      // Auto-link hardcoded account if first time on this device
+      if (!currentDbUserId) {
+        try {
+          const user = await getUserByIgId(IG_USER_ID);
+          if (user) {
+            setDbUserId(user.id);
+            currentDbUserId = user.id;
+          }
+        } catch (e) { console.error('Auto-link failed', e); }
+      }
+
+      if (currentDbUserId) {
+        loadFromDB();
+      }
+    };
+
+    initialize();
+
     // 2. Fall back to localStorage cache if DB is empty
     loadCached();
     // 3. Set the preset token if none stored
