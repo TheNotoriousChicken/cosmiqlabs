@@ -53,13 +53,13 @@ export default function BestTimePredictor() {
       });
     }
 
-    // Process and sort top 3 times for each day
+    // Process and sort top 5 times for each day
     DAYS.forEach(day => {
       if (weeklySchedule[day].length > 0) {
-        // Sort by highest online/reach value and take top 3
+        // Sort by highest online/reach value and take top 5
         weeklySchedule[day].sort((a, b) => b.val - a.val);
-        weeklySchedule[day] = weeklySchedule[day].slice(0, 3).map(x => x.hour);
-        // Sort the resulting 3 hours chronologically for display
+        weeklySchedule[day] = weeklySchedule[day].slice(0, 5).map(x => x.hour);
+        // Sort the resulting hours chronologically for display
         weeklySchedule[day].sort((a, b) => a - b);
       }
     });
@@ -90,7 +90,7 @@ export default function BestTimePredictor() {
           
           if (hours.length > 0) {
             hours.sort((a, b) => b.val - a.val);
-            weeklySchedule[day] = hours.slice(0, 3).map(x => x.hour).sort((a,b) => a - b);
+            weeklySchedule[day] = hours.slice(0, 5).map(x => x.hour).sort((a,b) => a - b);
           }
         }
       });
@@ -100,8 +100,8 @@ export default function BestTimePredictor() {
     DAYS.forEach(day => {
       if (weeklySchedule[day].length === 0) {
         weeklySchedule[day] = FALLBACK_TIMES;
-      } else while (weeklySchedule[day].length < 3) {
-        // If they only have 1-2 times, pad with generic times that aren't already included
+      } else while (weeklySchedule[day].length < 5) {
+        // If they only have a few times, pad with generic times that aren't already included
         const fallback = FALLBACK_TIMES.find(f => !weeklySchedule[day].includes(f));
         if (fallback !== undefined) weeklySchedule[day].push(fallback);
         else break;
@@ -129,7 +129,7 @@ export default function BestTimePredictor() {
         </div>
         <div>
           <h3 style={{ margin: 0, fontSize: 18, color: 'var(--text-primary)' }}>Optimal Posting Schedule</h3>
-          <p style={{ margin: '4px 0 0 0', fontSize: 13, color: 'var(--text-secondary)' }}>Top 3 recommended times per day based on audience activity</p>
+          <p style={{ margin: '4px 0 0 0', fontSize: 13, color: 'var(--text-secondary)' }}>Top 5 recommended times per day based on audience activity</p>
         </div>
       </div>
 
