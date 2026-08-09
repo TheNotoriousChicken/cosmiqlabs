@@ -512,7 +512,75 @@ body {
 
 @media (max-width: 768px) {
   .sidebar { display: none; }
-  .main-content { margin-left: 0; }
-  .topbar { padding: 0 24px; }
-  .page-container { padding: 0 24px 40px; }
+  .mobile-nav { display: flex; }
+  .main-content { margin-left: 0; padding-bottom: 90px; }
+  .topbar { padding: 0 20px; height: 70px; margin-bottom: 16px; }
+  .topbar-title { font-size: 24px; }
+  .page-container { padding: 0 16px 24px; }
+  
+  .charts-grid { grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
+  .metrics-grid { grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .metric-card { padding: 20px; }
+  .metric-value { font-size: 32px; }
+  .metric-label { font-size: 13px; margin-bottom: 8px; }
+  
+  .full-width-card { margin-bottom: 24px; }
+  .chart-card { padding: 24px 16px; }
+  .chart-title { font-size: 18px; }
+  .chart-subtitle { font-size: 13px; }
+  
+  .post-grid { grid-template-columns: 1fr; gap: 24px; }
+  .post-card { padding: 16px; }
+  .post-card-body { padding: 20px 4px 4px; }
+  
+  .data-table th { padding: 0 12px 12px; font-size: 11px; }
+  .data-table td { padding: 16px 12px; font-size: 13px; }
+  
+  /* Make range tabs scrollable if they don't fit */
+  .range-tabs { flex-wrap: wrap; justify-content: center; }
+  .range-tab { padding: 8px 16px; font-size: 12px; }
 }
+
+/* ═══════════════════════════════════════════
+   MOBILE NAV BAR
+═══════════════════════════════════════════ */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: rgba(230, 235, 245, 0.95);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  box-shadow: 0 -10px 20px rgba(184, 198, 218, 0.3);
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 16px;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mobile-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 800;
+  flex: 1;
+  height: 100%;
+  transition: all 0.2s;
+}
+
+.mobile-nav-link:active {
+  transform: scale(0.95);
+}
+
+.mobile-nav-link.active {
+  color: var(--accent-color);
+}
+

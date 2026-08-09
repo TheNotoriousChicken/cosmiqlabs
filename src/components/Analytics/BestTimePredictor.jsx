@@ -144,7 +144,7 @@ export default function BestTimePredictor() {
               {day}
             </div>
             
-            <div style={{ display: 'flex', gap: 12, flex: 1 }}>
+            <div style={{ display: 'flex', gap: 12, flex: 1, flexWrap: 'wrap' }}>
               {schedule[day].map((hour, i) => (
                 <div key={hour} style={{
                   display: 'flex', alignItems: 'center', gap: 6,

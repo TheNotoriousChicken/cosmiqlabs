@@ -145,7 +145,7 @@ export default function Demographics() {
               ) : <div className="empty-state">No data available</div>}
             </div>
             {/* Custom Legend */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 16, marginTop: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 16, marginTop: 16 }}>
               {genderData.map(entry => {
                 const total = genderData.reduce((sum, g) => sum + g.value, 0);
                 const percent = total > 0 ? ((entry.value / total) * 100).toFixed(1) : 0;

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Sidebar from './components/Layout/Sidebar';
+import MobileNav from './components/Layout/MobileNav';
 import Overview from './pages/Overview';
 import TopContent from './pages/TopContent';
 import FollowerAnalytics from './pages/FollowerAnalytics';
@@ -79,6 +80,7 @@ export default function App() {
             <Route path="/settings"   element={<Settings />} />
           </Routes>
         </main>
+        <MobileNav />
       </div>
       <Toaster
         position="bottom-right"
