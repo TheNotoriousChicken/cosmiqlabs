@@ -4,8 +4,11 @@ import EngagementRateChart from '../components/Charts/EngagementRateChart';
 import ContentTypePieChart from '../components/Charts/ContentTypePieChart';
 import BestTimePredictor from '../components/Analytics/BestTimePredictor';
 import { useInstagramData } from '../hooks/useInstagramData';
+import { useAppStore } from '../store/useAppStore';
+import { fetchOnlineFollowers } from '../services/instagramApi';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
+import { useState, useEffect } from 'react';
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -22,22 +25,50 @@ const item = {
 
 export default function EngagementAnalytics() {
   const { filteredPosts, totals, profile, avgEngagementRate, loading } = useInstagramData();
+  const { accessToken } = useAppStore();
+  const [onlineData, setOnlineData] = useState(null);
+
+  useEffect(() => {
+    if (accessToken) {
+      fetchOnlineFollowers(accessToken).then(setOnlineData);
+    }
+  }, [accessToken]);
 
   // Heatmap calculation
   const heatmap = {};
-  DAYS.forEach(d => { heatmap[d] = {}; HOURS.forEach(h => { heatmap[d][h] = { posts: 0, likes: 0, comments: 0 }; }); });
-  filteredPosts.forEach(p => {
-    const d = new Date(p.timestamp);
-    const day = DAYS[d.getDay()];
-    const hour = d.getHours();
-    if (heatmap[day]?.[hour]) {
-      heatmap[day][hour].posts += 1;
-      heatmap[day][hour].likes += p.like_count || 0;
-      heatmap[day][hour].comments += p.comments_count || 0;
-    }
-  });
+  DAYS.forEach(d => { heatmap[d] = {}; HOURS.forEach(h => { heatmap[d][h] = 0; }); });
+  let hasHeatmapData = false;
 
-  const maxHeatVal = Math.max(...Object.values(heatmap).flatMap(d => Object.values(d).map(h => h.likes + h.comments)));
+  if (onlineData && onlineData.length > 0) {
+    onlineData.forEach(dayRecord => {
+      if (dayRecord.end_time && Object.keys(dayRecord.value || {}).length > 0) {
+        hasHeatmapData = true;
+        const dateObj = new Date(dayRecord.end_time);
+        dateObj.setDate(dateObj.getDate() - 1); // data is for the day ending at this time
+        const dayString = DAYS[dateObj.getDay()];
+        
+        Object.entries(dayRecord.value).forEach(([hourStr, count]) => {
+          const h = parseInt(hourStr, 10);
+          if (heatmap[dayString]) {
+            heatmap[dayString][h] = Math.max(heatmap[dayString][h], count);
+          }
+        });
+      }
+    });
+  } else {
+    // Fallback to post-based heatmap if API fails
+    filteredPosts.forEach(p => {
+      const d = new Date(p.timestamp);
+      const day = DAYS[d.getDay()];
+      const hour = d.getHours();
+      if (heatmap[day]?.[hour] !== undefined) {
+        heatmap[day][hour] += (p.like_count || 0) + (p.comments_count || 0);
+        if (heatmap[day][hour] > 0) hasHeatmapData = true;
+      }
+    });
+  }
+
+  const maxHeatVal = Math.max(...Object.values(heatmap).flatMap(d => Object.values(d)));
 
   const metrics = [
     { label: 'Avg Eng. Rate', value: avgEngagementRate, suffix: '%' },
@@ -121,7 +152,7 @@ export default function EngagementAnalytics() {
             </div>
           </div>
 
-          {filteredPosts.length < 3 ? (
+          {!hasHeatmapData ? (
             <div className="empty-state" style={{ padding: '40px' }}>
               <div className="empty-state-icon">🕐</div>
               <div className="empty-state-title">Insufficient Data</div>
@@ -143,12 +174,12 @@ export default function EngagementAnalytics() {
                     <div style={{ width: 60, fontSize: 14, color: 'var(--text-secondary)', fontWeight: 800, flexShrink: 0 }}>{day}</div>
                     <div style={{ display: 'flex', flex: 1, gap: 8 }}>
                       {HOURS.map(h => {
-                        const val = heatmap[day][h].likes + heatmap[day][h].comments;
+                        const val = heatmap[day][h];
                         const intensity = maxHeatVal > 0 ? val / maxHeatVal : 0;
                         return (
                           <div
                             key={h}
-                            title={`${day} ${h}:00 — ${heatmap[day][h].posts} posts, ${val} engagements`}
+                            title={`${day} ${h}:00 — ${val} online followers`}
                             style={{
                               flex: 1,
                               height: 36,
