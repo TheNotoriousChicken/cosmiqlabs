@@ -12,55 +12,27 @@ export const useInstagramData = () => {
   } = useAppStore();
 
   const refresh = async (silent = false) => {
-    if (!accessToken) {
-      if (!silent) toast.error('No access token. Go to Settings to add one.');
-      return;
-    }
     if (!silent) setLoading(true);
     if (!silent) setError(null);
     try {
-      // 1. Fetch fresh data from Instagram API
-      const [profileData, postsData, insightsData, demoData] = await Promise.all([
-        fetchProfile(accessToken),
-        fetchPostsWithInsights(accessToken),
-        fetchAccountInsights(accessToken),
-        fetchFollowerDemographics(accessToken),
-      ]);
-
-      // 2. Upsert user into Supabase, get the db user record back
-      const dbUser = await upsertUser(profileData, accessToken);
-
-      // 3. Save today's follower snapshot to DB (one per day)
-      await saveSnapshot(dbUser.id, profileData.followers_count, profileData.media_count);
-
-      // 4. Upsert posts and their insights into Supabase
-      await upsertPostsAndInsights(dbUser.id, postsData);
+      // 1. Trigger the Vercel backend to sync directly with Instagram
+      const response = await fetch('/api/sync', { method: 'POST' });
       
-      // 4.5. Upsert demographics
-      await upsertDemographics(dbUser.id, demoData);
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.details || errData.error || 'Failed to trigger background sync.');
+      }
 
-      // 5. Load full enriched posts back from DB (with latest insights)
-      const dbPosts = await loadPostsFromDB(dbUser.id);
-
-      // 6. Load snapshots and demographics from DB
-      const dbSnapshots = await loadSnapshotsFromDB(dbUser.id);
-      const dbDemographics = await loadDemographicsFromDB(dbUser.id);
-
-      // 7. Update zustand state from DB data
-      setProfile(profileData);
-      setPosts(dbPosts);
-      setAccountInsights(insightsData);
-      setSnapshots(dbSnapshots);
-      setDemographics(dbDemographics);
-      setDbUserId(dbUser.id);
+      // 2. Reload the fresh data from the Database
+      await loadFromDB();
       markFetched();
 
-      if (!silent) toast.success('Data synced to database!');
+      if (!silent) toast.success('Data synced successfully!');
     } catch (err) {
-      const msg = err?.response?.data?.error?.message || err.message || 'Failed to fetch data';
+      const msg = err.message || 'Failed to sync data';
       if (!silent) {
         setError(msg);
-        toast.error(`Error: ${msg}`);
+        toast.error(`Sync Error: ${msg}`);
       }
       console.error('Refresh error:', err);
     } finally {
