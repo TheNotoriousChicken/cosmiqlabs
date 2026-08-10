@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Background sync failed:', error);
-    return res.status(500).json({ error: 'Background sync failed', details: error.message });
+    console.error('Background sync failed:', error?.response?.data || error);
+    return res.status(500).json({ error: 'Background sync failed', details: error?.response?.data || error.message });
   }
 }
