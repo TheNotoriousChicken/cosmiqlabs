@@ -73,14 +73,16 @@ export const useInstagramData = () => {
     const currentDbUserId = useAppStore.getState().dbUserId;
     if (!currentDbUserId) return;
     try {
-      const [dbPosts, dbSnapshots, dbDemographics] = await Promise.all([
+      const [dbPosts, dbSnapshots, dbDemographics, dbUser] = await Promise.all([
         loadPostsFromDB(currentDbUserId),
         loadSnapshotsFromDB(currentDbUserId),
         loadDemographicsFromDB(currentDbUserId),
+        import('../lib/db').then(m => m.getUserByIgId('17841410004708818')),
       ]);
       setPosts(dbPosts);
       setSnapshots(dbSnapshots);
       setDemographics(dbDemographics);
+      if (dbUser) setProfile(dbUser);
     } catch (err) {
       console.error('DB load error:', err);
     }

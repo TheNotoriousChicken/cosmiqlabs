@@ -6,8 +6,6 @@ import { Save, Download, Trash2, PlusCircle, Eye, EyeOff, Key, Database, Zap } f
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
-const LONG_LIVED_TOKEN = 'EAAY7lP7B3MQBSBqyN4A9fbfZB0YEI2k6wciJ6XuAkuFgbr7sA8bvOiYGwR3CeTXdJUrBMSkGKVpbczPNRAG9K4QH1AF90c8qbl22ZAWBPnsaJ7OpKXDyzmxuIqsoA1jhhFe2dJZC2ax1QEBCvsVHWgobiJ3VJbtkxshNMDFatUE08wKZAnwTisDWCNUiohQv';
-
 const container = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: 0.1 } }
@@ -22,7 +20,7 @@ export default function Settings() {
   const { accessToken, mode, snapshots, setAccessToken, setMode, addSnapshot, clearSnapshots } = useAppStore();
   const { profile } = useInstagramData();
 
-  const [tokenInput, setTokenInput] = useState(accessToken || LONG_LIVED_TOKEN);
+  const [tokenInput, setTokenInput] = useState(accessToken || '');
   const [showToken, setShowToken] = useState(false);
   const [manualFollowers, setManualFollowers] = useState('');
   const [manualDate, setManualDate] = useState('');

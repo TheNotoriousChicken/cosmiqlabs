@@ -15,8 +15,7 @@ import { useInstagramData } from './hooks/useInstagramData';
 
 import { getUserByIgId } from './lib/db';
 
-// Pre-seed the token so the app works out of the box
-const PRESET_TOKEN = 'EAAY7lP7B3MQBSBqyN4A9fbfZB0YEI2k6wciJ6XuAkuFgbr7sA8bvOiYGwR3CeTXdJUrBMSkGKVpbczPNRAG9K4QH1AF90c8qbl22ZAWBPnsaJ7OpKXDyzmxuIqsoA1jhhFe2dJZC2ax1QEBCvsVHWgobiJ3VJbtkxshNMDFatUE08wKZAnwTisDWCNUiohQv';
+// Hardcoded IG user ID to automatically load the correct database profile
 const IG_USER_ID = '17841410004708818';
 
 export default function App() {
@@ -44,26 +43,19 @@ export default function App() {
     };
 
     initialize();
-
-    // 2. Fall back to localStorage cache if DB is empty
     loadCached();
-    // 3. Set the preset token if none stored
-    if (!accessToken) {
-      setAccessToken(PRESET_TOKEN);
-    }
   }, []);
 
-  // Background auto-refresh polling
-  // IG Limit is ~200 calls/hour. One refresh makes ~33 API calls (Profile + Insights + 30 individual post insight calls).
-  // 200 / 33 = ~6 refreshes per hour (Once every 10 minutes).
+  // Background auto-refresh polling (from Database, not directly from IG API to save rate limits)
+  // The Vercel backend / GitHub action handles syncing the DB with IG API every 10 mins.
   useEffect(() => {
-    if (mode === 'live' && accessToken) {
+    if (mode === 'live') {
       const interval = setInterval(() => {
-        refresh(true); // silent refresh
+        loadFromDB();
       }, 600000); // 10 minutes
       return () => clearInterval(interval);
     }
-  }, [mode, accessToken, refresh]);
+  }, [mode, loadFromDB]);
 
   return (
     <BrowserRouter>
