@@ -20,7 +20,7 @@ export default function Settings() {
   const { accessToken, mode, snapshots, setAccessToken, setMode, addSnapshot, clearSnapshots } = useAppStore();
   const { profile } = useInstagramData();
 
-  const [tokenInput, setTokenInput] = useState(accessToken || '');
+  const [tokenInput, setTokenInput] = useState(accessToken || import.meta.env.VITE_IG_ACCESS_TOKEN || '');
   const [showToken, setShowToken] = useState(false);
   const [manualFollowers, setManualFollowers] = useState('');
   const [manualDate, setManualDate] = useState('');

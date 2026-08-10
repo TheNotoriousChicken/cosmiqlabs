@@ -44,6 +44,11 @@ export default function App() {
 
     initialize();
     loadCached();
+    
+    // Set token from Vercel Environment Variables if it exists and no token is saved locally
+    if (!useAppStore.getState().accessToken && import.meta.env.VITE_IG_ACCESS_TOKEN) {
+      setAccessToken(import.meta.env.VITE_IG_ACCESS_TOKEN);
+    }
   }, []);
 
   // Background auto-refresh polling (from Database, not directly from IG API to save rate limits)
