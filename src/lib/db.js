@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase } from './supabase.js';
 
 const IG_USER_ID = '17841410004708818'; // Hardcoded IG user ID
 

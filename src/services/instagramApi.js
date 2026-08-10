@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IG_CONFIG } from '../config';
+import { IG_CONFIG } from '../config.js';
 
 const BASE = IG_CONFIG.BASE_URL;
 const IG_ID = IG_CONFIG.INSTAGRAM_ACCOUNT_ID;
