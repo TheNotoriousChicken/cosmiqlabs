@@ -128,11 +128,11 @@ export const fetchPostsWithInsights = async (token) => {
   return enriched;
 };
 
-// ─── Online Followers Heatmap (Last 7 Days) ───────────────────────────────────
+// ─── Online Followers Heatmap (Last 30 Days) ───────────────────────────────────
 export const fetchOnlineFollowers = async (token) => {
   try {
     const until = Math.floor(Date.now() / 1000);
-    const since = until - (8 * 24 * 60 * 60); // fetch 8 days to guarantee 7 full days
+    const since = until - (30 * 24 * 60 * 60); // fetch 30 days for robust heatmap
     const { data } = await api.get(`/${IG_ID}/insights`, {
       params: { metric: 'online_followers', period: 'lifetime', since, until, access_token: token }
     });

@@ -189,7 +189,7 @@ export default function EngagementAnalytics() {
                         return (
                           <div
                             key={h}
-                            title={`${day} ${h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`} — ${val} online followers`}
+                            title={`${day} ${h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`} — ${val} ${hasHeatmapData && onlineData?.length > 0 ? 'online followers' : 'engagements'}`}
                             style={{
                               flex: 1,
                               height: 36,
