@@ -44,7 +44,7 @@ export default function TopBar() {
 
         <div className={`badge ${mode === 'live' ? 'badge-live' : 'badge-manual'}`}>
           {mode === 'live'
-            ? <><span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-cyan)', boxShadow: '0 0 8px var(--accent-cyan)' }} /> LIVE</>
+            ? <><span style={{ width: 8, height: 8, borderRadius: '50%', background: '#000' }} /> LIVE</>
             : 'MANUAL'
           }
         </div>

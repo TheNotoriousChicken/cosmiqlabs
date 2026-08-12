@@ -484,8 +484,8 @@ body {
   color: #000;
 }
 
-.badge-live { color: #fff; background: var(--accent-color); border: var(--brutal-border); box-shadow: 2px 2px 0px #000; }
-.badge-manual { color: var(--warning); }
+.badge-live { color: #000; background: var(--palette-3); border: var(--brutal-border); box-shadow: 2px 2px 0px #000; }
+.badge-manual { color: #000; background: var(--palette-1); border: var(--brutal-border); box-shadow: 2px 2px 0px #000; }
 
 /* ═══════════════════════════════════════════
    DATA TABLE
