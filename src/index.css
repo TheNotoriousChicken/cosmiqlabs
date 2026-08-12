@@ -12,9 +12,9 @@
   --brutal-shadow-sm:   4px 4px 0px #000000;
 
   /* Accents & Palette */
-  --accent-color:   #FF00E6; /* Hot Pink */
-  --accent-secondary: #00FFD1; /* Cyan */
-  --accent-glow:    rgba(255, 0, 230, 1);
+  --accent-color:   var(--palette-4); /* Cyan */
+  --accent-secondary: var(--palette-1); /* Yellow */
+  --accent-glow:    rgba(0, 229, 255, 0.5);
   
   /* Brutalist Palette */
   --palette-1: #FFDF00; /* Yellow */
