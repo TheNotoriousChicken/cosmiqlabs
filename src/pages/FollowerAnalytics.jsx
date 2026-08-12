@@ -107,12 +107,12 @@ export default function FollowerAnalytics() {
                     .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
                     .map((snap, i, arr) => {
                       const prev = arr[i + 1];
-                      const delta = prev ? snap.followers - prev.followers : null;
+                      const delta = prev ? snap.followers_count - prev.followers_count : null;
                       return (
                         <tr key={snap.id}>
                           <td style={{ color: 'var(--text-muted)' }}>{(snapshots.length - i).toString().padStart(3, '0')}</td>
                           <td>{new Date(snap.timestamp).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</td>
-                          <td style={{ fontWeight: 800, fontSize: 16 }}>{snap.followers?.toLocaleString()}</td>
+                          <td style={{ fontWeight: 800, fontSize: 16 }}>{snap.followers_count?.toLocaleString()}</td>
                           <td>
                             {delta !== null ? (
                               <span style={{ color: delta > 0 ? 'var(--success)' : delta < 0 ? 'var(--danger)' : 'var(--text-muted)', fontWeight: 800 }}>
