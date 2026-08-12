@@ -11,10 +11,18 @@
   --brutal-shadow:      6px 6px 0px #000000;
   --brutal-shadow-sm:   4px 4px 0px #000000;
 
-  /* Accents */
+  /* Accents & Palette */
   --accent-color:   #FF00E6; /* Hot Pink */
   --accent-secondary: #00FFD1; /* Cyan */
   --accent-glow:    rgba(255, 0, 230, 1);
+  
+  /* Brutalist Palette */
+  --palette-1: #FFDF00; /* Yellow */
+  --palette-2: #FF90E8; /* Pink */
+  --palette-3: #8CFF98; /* Green */
+  --palette-4: #00E5FF; /* Cyan */
+  --palette-5: #FF914D; /* Orange */
+  --palette-6: #D4B2FF; /* Lavender */
   
   --success:        #00FF00;
   --danger:         #FF0000;
@@ -108,7 +116,7 @@ body {
   width: var(--sidebar-w);
   z-index: 100;
   padding: 40px 24px;
-  background: var(--brutal-bg);
+  background: var(--palette-1);
   border-right: var(--brutal-border);
   box-shadow: 4px 0 0px #000000;
   display: flex;
@@ -352,8 +360,15 @@ body {
 }
 
 /* ═══════════════════════════════════════════
-   METRIC CARDS
+   METRIC CARDS & COLOR POP
 ═══════════════════════════════════════════ */
+.metrics-grid > :nth-child(6n + 1) { background: var(--palette-2); }
+.metrics-grid > :nth-child(6n + 2) { background: var(--palette-3); }
+.metrics-grid > :nth-child(6n + 3) { background: var(--palette-1); }
+.metrics-grid > :nth-child(6n + 4) { background: var(--palette-6); }
+.metrics-grid > :nth-child(6n + 5) { background: var(--palette-5); }
+.metrics-grid > :nth-child(6n + 6) { background: var(--palette-4); }
+
 .metric-card {
   padding: 32px;
   display: flex;
@@ -480,13 +495,20 @@ body {
 .data-table tbody tr:hover td { background: var(--brutal-bg-alt); }
 
 /* ═══════════════════════════════════════════
-   POST GRID
+   POST GRID & COLOR POP
 ═══════════════════════════════════════════ */
 .post-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 40px;
 }
+
+.post-grid > :nth-child(6n + 1) { background: var(--palette-1); }
+.post-grid > :nth-child(6n + 2) { background: var(--palette-4); }
+.post-grid > :nth-child(6n + 3) { background: var(--palette-2); }
+.post-grid > :nth-child(6n + 4) { background: var(--palette-3); }
+.post-grid > :nth-child(6n + 5) { background: var(--palette-6); }
+.post-grid > :nth-child(6n + 6) { background: var(--palette-5); }
 
 .post-card {
   padding: 24px;
