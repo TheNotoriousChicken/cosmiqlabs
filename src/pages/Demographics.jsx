@@ -1,4 +1,3 @@
-import TopBar from '../components/Layout/TopBar';
 import { useInstagramData } from '../hooks/useInstagramData';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
@@ -83,7 +82,6 @@ export default function Demographics() {
 
   return (
     <div>
-      <TopBar title="Audience Demographics" subtitle="Deep dive into who follows you" />
       <motion.div 
         className="page-container"
         variants={container}

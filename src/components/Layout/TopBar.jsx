@@ -3,10 +3,23 @@ import { useInstagramData } from '../../hooks/useInstagramData';
 import { useAppStore } from '../../store/useAppStore';
 import { formatDistanceToNow } from 'date-fns';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
-export default function TopBar({ title, subtitle }) {
-  const { loading, lastFetch, activeRange, mode, refresh } = useInstagramData();
+export default function TopBar() {
+  const { loading, lastFetch, activeRange, mode, refresh, profile } = useInstagramData();
   const setActiveRange = useAppStore(s => s.setActiveRange);
+  const location = useLocation();
+
+  let title = 'Dashboard';
+  let subtitle = profile ? `@${profile.username}` : 'Loading...';
+
+  if (location.pathname === '/') title = 'Overview';
+  else if (location.pathname.startsWith('/content')) title = 'Top Content';
+  else if (location.pathname.startsWith('/followers')) title = 'Follower Analytics';
+  else if (location.pathname.startsWith('/engagement')) title = 'Engagement Analysis';
+  else if (location.pathname.startsWith('/demographics')) title = 'Audience Demographics';
+  else if (location.pathname.startsWith('/settings')) title = 'Settings';
+  else if (location.pathname.startsWith('/post/')) title = 'Post Details';
 
   const RANGES = [
     { label: '7D',  value: '7d' },

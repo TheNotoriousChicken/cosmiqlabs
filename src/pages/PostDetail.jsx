@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useInstagramData } from '../hooks/useInstagramData';
-import TopBar from '../components/Layout/TopBar';
 import MetricCard from '../components/Cards/MetricCard';
 import { ArrowLeft, ExternalLink, MessageCircle, Heart, Bookmark, Share2, PlayCircle, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -42,7 +41,6 @@ export default function PostDetail() {
 
   return (
     <div>
-      <TopBar title="Post Details" subtitle={new Date(post.timestamp).toLocaleString()} />
       <motion.div 
         className="page-container"
         variants={container}

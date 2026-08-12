@@ -1,4 +1,3 @@
-import TopBar from '../components/Layout/TopBar';
 import MetricCard from '../components/Cards/MetricCard';
 import FollowerGrowthChart from '../components/Charts/FollowerGrowthChart';
 import EngagementChart from '../components/Charts/EngagementChart';
@@ -38,8 +37,6 @@ export default function Overview() {
 
   return (
     <div>
-      <TopBar title="Overview" subtitle={`@${profile?.username || 'dashboard'}`} />
-
       <motion.div 
         className="page-container"
         variants={container}

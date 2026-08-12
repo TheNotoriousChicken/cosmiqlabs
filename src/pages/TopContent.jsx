@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TopBar from '../components/Layout/TopBar';
 import { useInstagramData } from '../hooks/useInstagramData';
 import { ExternalLink, X, ArrowRight, Heart, MessageCircle, Image as ImageIcon, PlayCircle, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -70,8 +69,7 @@ export default function TopContent() {
 
   return (
     <div>
-      <TopBar title="Top Content" subtitle="Analyze your best performing posts" />
-      <div className="page-container">
+      <motion.div className="page-container">
         
         {/* Controls */}
         <div className="glass-panel" style={{ padding: '24px 32px', marginBottom: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24, overflow: 'visible' }}>
@@ -234,7 +232,7 @@ export default function TopContent() {
             ))}
           </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {/* Active Post Modal */}
       <AnimatePresence>

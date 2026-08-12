@@ -104,13 +104,10 @@ body {
 }
 
 .page-container {
-  padding: 114px 48px 60px;
+  padding: 0 48px 60px;
   flex: 1;
   max-width: 1600px;
   width: 100%;
-  position: relative;
-  isolation: isolate;
-  z-index: 1;
 }
 
 /* ═══════════════════════════════════════════
@@ -206,11 +203,9 @@ body {
    TOPBAR (Frosted Glass)
 ═══════════════════════════════════════════ */
 .topbar {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: var(--sidebar-w);
-  right: 0;
-  z-index: 9999;
+  z-index: 50;
   height: var(--topbar-h);
   padding: 0 48px;
   display: flex;
@@ -350,7 +345,6 @@ body {
   border-radius: var(--r-lg);
   box-shadow: var(--glass-shadow);
   position: relative;
-  isolation: isolate;
   overflow: hidden;
 }
 

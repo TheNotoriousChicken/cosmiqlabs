@@ -1,4 +1,3 @@
-import TopBar from '../components/Layout/TopBar';
 import EngagementChart from '../components/Charts/EngagementChart';
 import EngagementRateChart from '../components/Charts/EngagementRateChart';
 import ContentTypePieChart from '../components/Charts/ContentTypePieChart';
@@ -82,7 +81,6 @@ export default function EngagementAnalytics() {
 
   return (
     <div>
-      <TopBar title="Engagement Analysis" subtitle="Deep dive into audience interactions" />
       <motion.div 
         className="page-container"
         variants={container}

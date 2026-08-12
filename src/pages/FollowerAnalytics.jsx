@@ -1,4 +1,3 @@
-import TopBar from '../components/Layout/TopBar';
 import FollowerGrowthChart from '../components/Charts/FollowerGrowthChart';
 import { useInstagramData } from '../hooks/useInstagramData';
 import { useAppStore } from '../store/useAppStore';
@@ -43,7 +42,6 @@ export default function FollowerAnalytics() {
 
   return (
     <div>
-      <TopBar title="Follower Analytics" subtitle="Deep dive into your audience growth" />
       <motion.div 
         className="page-container"
         variants={container}

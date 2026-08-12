@@ -15,8 +15,8 @@ import { useInstagramData } from './hooks/useInstagramData';
 
 import { getUserByIgId } from './lib/db';
 
-// Hardcoded IG user ID to automatically load the correct database profile
 const IG_USER_ID = '17841410004708818';
+import TopBar from './components/Layout/TopBar';
 
 export default function App() {
   const { setAccessToken, accessToken, loadCached, mode, setDbUserId } = useAppStore();
@@ -67,6 +67,7 @@ export default function App() {
       <div className="app-layout">
         <Sidebar />
         <main className="main-content">
+          <TopBar />
           <Routes>
             <Route path="/"           element={<Overview />} />
             <Route path="/content"    element={<TopContent />} />

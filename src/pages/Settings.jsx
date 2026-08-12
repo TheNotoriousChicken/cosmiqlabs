@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import TopBar from '../components/Layout/TopBar';
 import { useAppStore } from '../store/useAppStore';
 import { useInstagramData } from '../hooks/useInstagramData';
 import { Save, Download, Trash2, PlusCircle, Eye, EyeOff, Key, Database, Zap } from 'lucide-react';
@@ -89,7 +88,6 @@ export default function Settings() {
 
   return (
     <div>
-      <TopBar title="Settings" subtitle="System configuration & data management" />
       <motion.div 
         className="page-container" 
         style={{ maxWidth: 1000 }}
