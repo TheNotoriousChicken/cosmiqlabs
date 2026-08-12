@@ -51,16 +51,16 @@ export default function App() {
     }
   }, []);
 
-  // Background auto-refresh polling (from Database, not directly from IG API to save rate limits)
-  // The Vercel backend / GitHub action handles syncing the DB with IG API every 10 mins.
+  // Background auto-refresh polling
+  // This forcefully triggers the Vercel backend to sync with Instagram every 10 minutes.
   useEffect(() => {
     if (mode === 'live') {
       const interval = setInterval(() => {
-        loadFromDB();
+        refresh(true); // true = silent refresh without loading screens
       }, 600000); // 10 minutes
       return () => clearInterval(interval);
     }
-  }, [mode, loadFromDB]);
+  }, [mode, refresh]);
 
   return (
     <BrowserRouter>
