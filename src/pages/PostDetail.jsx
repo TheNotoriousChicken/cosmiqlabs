@@ -3,6 +3,7 @@ import { useInstagramData } from '../hooks/useInstagramData';
 import MetricCard from '../components/Cards/MetricCard';
 import { ArrowLeft, ExternalLink, MessageCircle, Heart, Bookmark, Share2, PlayCircle, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
+import TopBar from '../components/Layout/TopBar';
 
 const container = {
   hidden: { opacity: 0 },
