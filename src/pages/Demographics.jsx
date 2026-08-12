@@ -158,7 +158,7 @@ export default function Demographics() {
           </motion.div>
 
           {/* Top Countries */}
-          <motion.div variants={item} className="glass-panel chart-card">
+          <motion.div variants={item} className="brutal-panel chart-card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Top Countries</div>
@@ -189,7 +189,7 @@ export default function Demographics() {
           </motion.div>
 
           {/* Top Cities */}
-          <motion.div variants={item} className="glass-panel chart-card">
+          <motion.div variants={item} className="brutal-panel chart-card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Top Cities</div>

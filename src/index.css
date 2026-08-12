@@ -38,6 +38,16 @@
   --r-md:   4px;
   --r-lg:   8px;
   --r-full: 9999px;
+
+  /* Legacy Fallbacks (Neumorphism & Glass) */
+  --bg-base: var(--brutal-bg);
+  --bg-elevated: var(--brutal-bg-alt);
+  --bg-overlay: var(--brutal-bg);
+  --neu-drop: var(--brutal-shadow);
+  --neu-drop-sm: var(--brutal-shadow-sm);
+  --neu-inner: var(--brutal-shadow-sm);
+  --neu-inner-sm: var(--brutal-shadow-sm);
+  --border-default: #000000;
 }
 
 /* ═══════════════════════════════════════════
@@ -277,14 +287,16 @@ body {
 }
 
 .btn-primary {
-  background: var(--accent-gradient);
-  border: 1px solid rgba(255,255,255,0.4);
+  background: var(--accent-color);
+  border: var(--brutal-border);
   color: #fff;
-  box-shadow: 0 4px 20px var(--accent-glow);
+  box-shadow: var(--brutal-shadow-sm);
 }
 .btn-primary:hover {
-  background: var(--accent-gradient);
+  background: var(--accent-color);
   filter: brightness(1.1);
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000;
 }
 
 .btn-secondary {
