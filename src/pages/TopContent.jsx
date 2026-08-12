@@ -72,7 +72,7 @@ export default function TopContent() {
       <motion.div className="page-container">
         
         {/* Controls */}
-        <div className="clay-panel" style={{ padding: '24px 32px', marginBottom: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24, overflow: 'visible' }}>
+        <div className="brutal-panel" style={{ padding: '24px 32px', marginBottom: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24, overflow: 'visible' }}>
           <div className="range-tabs">
             {FILTER_OPTIONS.map(o => (
               <button key={o.value} className={`range-tab${filter === o.value ? ' active' : ''}`} onClick={() => setFilter(o.value)}>
@@ -173,7 +173,7 @@ export default function TopContent() {
               <motion.div
                 key={post.id}
                 variants={item}
-                className="post-card clay-panel"
+                className="post-card brutal-panel"
                 onClick={() => setActivePost(post)}
               >
                 <div style={{ position: 'relative' }}>
@@ -246,7 +246,7 @@ export default function TopContent() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="clay-panel" 
+              className="brutal-panel" 
               style={{ width: '100%', maxWidth: 900, display: 'flex', overflow: 'hidden' }}
               onClick={e => e.stopPropagation()}
             >

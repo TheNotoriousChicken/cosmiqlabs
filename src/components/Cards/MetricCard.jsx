@@ -15,7 +15,7 @@ export default function MetricCard({ label, value, delta, suffix = '', prefix = 
   const isDown = delta < 0;
 
   return (
-    <div className="clay-panel metric-card">
+    <div className="brutal-panel metric-card">
       <div className="metric-card-top">
         <span className="metric-label">{label}</span>
       </div>

@@ -90,7 +90,7 @@ export default function Demographics() {
       >
         <div className="charts-grid">
           {/* Age Distribution */}
-          <motion.div variants={item} className="clay-panel chart-card">
+          <motion.div variants={item} className="brutal-panel chart-card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Age Distribution</div>
@@ -113,7 +113,7 @@ export default function Demographics() {
           </motion.div>
 
           {/* Gender Split */}
-          <motion.div variants={item} className="clay-panel chart-card">
+          <motion.div variants={item} className="brutal-panel chart-card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Gender Split</div>

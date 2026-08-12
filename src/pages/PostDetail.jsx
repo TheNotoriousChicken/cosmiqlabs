@@ -56,7 +56,7 @@ export default function PostDetail() {
         <div className="charts-grid">
           {/* Left Column: Media & Caption */}
           <motion.div variants={item} style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-            <div className="clay-panel" style={{ padding: 24 }}>
+            <div className="brutal-panel" style={{ padding: 24 }}>
               {post.thumbnail_url || post.media_url ? (
                 <img 
                   src={post.thumbnail_url || post.media_url} 
@@ -70,7 +70,7 @@ export default function PostDetail() {
               )}
             </div>
 
-            <div className="clay-panel" style={{ padding: 32 }}>
+            <div className="brutal-panel" style={{ padding: 32 }}>
               <h3 style={{ fontSize: 16, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 16 }}>Caption</h3>
               <p style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--text-primary)', whiteSpace: 'pre-wrap' }}>
                 {post.caption || 'No caption.'}
@@ -91,7 +91,7 @@ export default function PostDetail() {
 
           {/* Right Column: Deep Metrics */}
           <motion.div variants={item} style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-            <div className="clay-panel" style={{ padding: 32 }}>
+            <div className="brutal-panel" style={{ padding: 32 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
                 <div>
                   <div style={{ fontSize: 16, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800, marginBottom: 8 }}>Performance Score</div>
@@ -109,7 +109,7 @@ export default function PostDetail() {
               </div>
             </div>
 
-            <div className="clay-panel" style={{ padding: 32 }}>
+            <div className="brutal-panel" style={{ padding: 32 }}>
               <h3 style={{ fontSize: 16, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 24 }}>Discovery</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                 <MetricBox icon={Eye} label="Reach" value={post.insights?.reach} />
