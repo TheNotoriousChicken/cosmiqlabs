@@ -171,9 +171,9 @@ body {
 
 .nav-link.active {
   color: #fff;
-  background: var(--accent-gradient);
-  box-shadow: 0 4px 15px var(--accent-glow);
-  border: 1px solid rgba(255,255,255,0.4);
+  background: #000;
+  box-shadow: var(--brutal-shadow-sm);
+  border: var(--brutal-border);
 }
 
 .nav-link svg { width: 20px; height: 20px; stroke-width: 2.5; }
@@ -453,7 +453,7 @@ body {
   color: #000;
 }
 
-.badge-live { color: #fff; background: var(--accent-gradient); border: 1px solid rgba(255,255,255,0.4); }
+.badge-live { color: #fff; background: var(--accent-color); border: var(--brutal-border); box-shadow: 2px 2px 0px #000; }
 .badge-manual { color: var(--warning); }
 
 /* ═══════════════════════════════════════════
