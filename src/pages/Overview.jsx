@@ -47,25 +47,64 @@ export default function Overview() {
         <motion.div variants={item} className="full-width-card brutal-panel" style={{ padding: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {profile ? (
             <>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 32, flex: 1, minWidth: 300 }}>
                 {profile.profile_picture_url ? (
-                  <img src={profile.profile_picture_url} alt={profile.name} style={{ width: 100, height: 100, borderRadius: '50%', boxShadow: 'var(--neu-drop)' }} />
+                  <div style={{ position: 'relative' }}>
+                    <img src={profile.profile_picture_url} alt={profile.name} style={{ width: 100, height: 100, borderRadius: '50%', border: 'var(--brutal-border)', boxShadow: 'var(--brutal-shadow)' }} />
+                    <div style={{ position: 'absolute', bottom: -5, right: -5, background: 'var(--palette-3)', border: 'var(--brutal-border)', padding: '2px 8px', borderRadius: 12, fontSize: 10, fontWeight: 900, boxShadow: '2px 2px 0px #000' }}>PRO</div>
+                  </div>
                 ) : (
-                  <div style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--bg-base)', boxShadow: 'var(--neu-drop)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40, fontWeight: 800 }}>
-                    {profile.name?.charAt(0)}
+                  <div style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--palette-1)', border: 'var(--brutal-border)', boxShadow: 'var(--brutal-shadow)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40, fontWeight: 900, color: '#000' }}>
+                    {profile.name?.charAt(0) || profile.username?.charAt(0) || '@'}
                   </div>
                 )}
-                <div>
-                  <div style={{ fontSize: 36, fontWeight: 900, letterSpacing: '-1px', marginBottom: 8, color: 'var(--text-primary)' }}>{profile.name}</div>
-                  <div style={{ fontSize: 16, color: 'var(--text-secondary)', fontWeight: 600, marginBottom: 12 }}>@{profile.username}</div>
+                
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
+                    <div style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-1px', color: 'var(--text-primary)', textTransform: 'uppercase', lineHeight: 1 }}>
+                      {profile.name || profile.username}
+                    </div>
+                    <div style={{ background: 'var(--palette-2)', padding: '4px 10px', border: 'var(--brutal-border)', borderRadius: 20, fontSize: 11, fontWeight: 800, boxShadow: '2px 2px 0px #000', color: '#000' }}>
+                      CREATOR
+                    </div>
+                  </div>
+                  
+                  <div style={{ fontSize: 16, color: 'var(--text-secondary)', fontWeight: 700, marginBottom: 16, fontFamily: 'var(--font-mono)' }}>
+                    @{profile.username}
+                  </div>
+                  
+                  {/* Brutalist Stats Row */}
+                  <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'var(--bg-elevated)', padding: '6px 12px', border: '1px solid var(--border-default)', borderRadius: 8, fontSize: 13, fontWeight: 700 }}>
+                      <span style={{ color: 'var(--text-secondary)' }}>POSTS</span>
+                      <span style={{ color: 'var(--text-primary)' }}>{profile.media_count?.toLocaleString() || 0}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'var(--bg-elevated)', padding: '6px 12px', border: '1px solid var(--border-default)', borderRadius: 8, fontSize: 13, fontWeight: 700 }}>
+                      <span style={{ color: 'var(--text-secondary)' }}>FOLLOWING</span>
+                      <span style={{ color: 'var(--text-primary)' }}>{profile.follows_count?.toLocaleString() || 0}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'var(--bg-elevated)', padding: '6px 12px', border: '1px solid var(--border-default)', borderRadius: 8, fontSize: 13, fontWeight: 700 }}>
+                      <span style={{ color: 'var(--text-secondary)' }}>ID</span>
+                      <span style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{profile.id?.slice(-6) || '8X9F2'}</span>
+                    </div>
+                  </div>
+
                   {profile.biography && (
-                    <div style={{ fontSize: 15, color: 'var(--text-primary)', lineHeight: 1.6, maxWidth: 600 }}>
+                    <div style={{ fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.6, maxWidth: 600, marginTop: 16, borderLeft: '4px solid var(--palette-4)', paddingLeft: 12, fontWeight: 600 }}>
                       {profile.biography}
                     </div>
                   )}
                 </div>
               </div>
-              <div>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+                {/* Decorative Barcode */}
+                <div style={{ display: 'flex', gap: 3, height: 36, opacity: 0.15 }}>
+                  {[4, 2, 6, 1, 3, 8, 2, 5, 2, 1, 4, 3, 2, 5].map((w, i) => (
+                    <div key={i} style={{ width: w * 2, background: 'var(--text-primary)', height: '100%' }} />
+                  ))}
+                </div>
+                
                 <a href={`https://instagram.com/${profile.username}`} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '16px 32px' }}>
                   Open Instagram <ArrowUpRight size={18} />
                 </a>
