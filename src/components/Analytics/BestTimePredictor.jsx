@@ -134,7 +134,9 @@ export default function BestTimePredictor() {
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {DAYS.map(day => (
+        {DAYS.map((day, dayIndex) => {
+          const BRUTAL_COLORS = ['var(--palette-1)', 'var(--palette-2)', 'var(--palette-3)', 'var(--palette-4)', 'var(--palette-5)', 'var(--palette-6)'];
+          return (
           <div key={day} style={{ 
             display: 'flex', alignItems: 'center', padding: '12px 16px',
             background: 'var(--bg-base)', borderRadius: 'var(--r-md)',
@@ -149,10 +151,11 @@ export default function BestTimePredictor() {
                 <div key={hour} style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   padding: '6px 12px', borderRadius: 20,
-                  background: i === 0 ? 'var(--accent-color)' : 'var(--bg-elevated)',
-                  color: i === 0 ? 'white' : 'var(--text-secondary)',
-                  fontSize: 13, fontWeight: 700,
-                  boxShadow: i === 0 ? '0 4px 12px rgba(92,107,250,0.3)' : 'var(--neu-drop-sm)'
+                  background: i === 0 ? BRUTAL_COLORS[dayIndex % BRUTAL_COLORS.length] : 'var(--bg-elevated)',
+                  color: i === 0 ? '#000' : 'var(--text-secondary)',
+                  border: i === 0 ? 'var(--brutal-border)' : '1px solid var(--border-default)',
+                  fontSize: 13, fontWeight: 800,
+                  boxShadow: i === 0 ? '2px 2px 0px #000' : 'none'
                 }}>
                   {i === 0 ? <Star size={12} fill="currentColor" /> : <Clock size={12} />}
                   {formatHour(hour)}
@@ -160,7 +163,7 @@ export default function BestTimePredictor() {
               ))}
             </div>
           </div>
-        ))}
+        )})}
       </div>
     </motion.div>
   );

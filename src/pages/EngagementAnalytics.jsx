@@ -170,7 +170,9 @@ export default function EngagementAnalytics() {
                   ))}
                 </div>
 
-                {DAYS.map(day => (
+                {DAYS.map((day, dayIndex) => {
+                  const BRUTAL_COLORS = ['var(--palette-1)', 'var(--palette-2)', 'var(--palette-3)', 'var(--palette-4)', 'var(--palette-5)', 'var(--palette-6)'];
+                  return (
                   <div key={day} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
                     <div style={{ width: 60, fontSize: 14, color: 'var(--text-secondary)', fontWeight: 800, flexShrink: 0 }}>{day}</div>
                     <div style={{ display: 'flex', flex: 1, gap: 8 }}>
@@ -191,14 +193,15 @@ export default function EngagementAnalytics() {
                             style={{
                               flex: 1,
                               height: 36,
-                              borderRadius: 8,
+                              borderRadius: 4,
                               background: intensity > 0
-                                ? `rgba(92, 107, 250, ${0.1 + intensity * 0.9})`
-                                : 'var(--glass-bg)',
-                              border: intensity > 0 ? '1px solid transparent' : '1px solid var(--glass-border-light)',
-                              boxShadow: intensity > 0 ? '0 4px 12px rgba(92, 107, 250, 0.2)' : 'none',
+                                ? BRUTAL_COLORS[dayIndex % BRUTAL_COLORS.length]
+                                : 'var(--bg-elevated)',
+                              opacity: intensity > 0 ? (0.3 + intensity * 0.7) : 1,
+                              border: intensity > 0 ? 'var(--brutal-border)' : '1px solid var(--border-default)',
+                              boxShadow: intensity > 0 ? '2px 2px 0px #000' : 'none',
                               transition: 'all 0.2s',
-                              cursor: intensity > 0 ? 'pointer' : 'default',
+                              cursor: 'pointer'
                             }}
                             onMouseEnter={e => { if(intensity>0) { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.zIndex = 10; e.currentTarget.style.boxShadow = '0 8px 24px rgba(92, 107, 250, 0.4)'; } }}
                             onMouseLeave={e => { if(intensity>0) { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.zIndex = 1; e.currentTarget.style.boxShadow = '0 4px 12px rgba(92, 107, 250, 0.2)'; } }}
@@ -207,7 +210,7 @@ export default function EngagementAnalytics() {
                       })}
                     </div>
                   </div>
-                ))}
+                )})}
               </div>
             </div>
           )}
