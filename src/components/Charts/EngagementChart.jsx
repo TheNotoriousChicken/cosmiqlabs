@@ -25,10 +25,10 @@ const TT = ({ active, payload, label }) => {
 };
 
 const LINES = [
-  { key: 'likes',    color: '#F43F5E', label: 'Likes'    },
-  { key: 'comments', color: '#F59E0B', label: 'Comments' },
-  { key: 'saves',    color: '#10B981', label: 'Saves'    },
-  { key: 'shares',   color: '#38BDF8', label: 'Shares'   },
+  { key: 'likes',    color: 'var(--palette-2)', label: 'Likes'    },
+  { key: 'comments', color: 'var(--palette-1)', label: 'Comments' },
+  { key: 'saves',    color: 'var(--palette-3)', label: 'Saves'    },
+  { key: 'shares',   color: 'var(--palette-4)', label: 'Shares'   },
 ];
 
 export default function EngagementChart({ posts, loading }) {

@@ -52,8 +52,8 @@ export default function FollowerGrowthChart({ data, loading }) {
       <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
         <defs>
           <linearGradient id="glowGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="var(--accent-blue)" stopOpacity={0.4} />
-            <stop offset="100%" stopColor="var(--accent-violet)" stopOpacity={0} />
+            <stop offset="0%"   stopColor="var(--palette-2)" stopOpacity={1} />
+            <stop offset="100%" stopColor="var(--palette-2)" stopOpacity={0} />
           </linearGradient>
         </defs>
         
@@ -65,12 +65,12 @@ export default function FollowerGrowthChart({ data, loading }) {
         <Area 
           type="monotone" 
           dataKey="followers" 
-          stroke="url(#glowGrad)" 
+          stroke="var(--palette-2)" 
           strokeWidth={3} 
           fill="url(#glowGrad)"
           name="Followers" 
           dot={false} 
-          activeDot={{ r: 6, fill: '#fff', stroke: 'var(--accent-blue)', strokeWidth: 3 }} 
+          activeDot={{ r: 6, fill: '#000', stroke: 'var(--palette-2)', strokeWidth: 3 }} 
           animationDuration={1500}
           animationEasing="ease-out"
         />

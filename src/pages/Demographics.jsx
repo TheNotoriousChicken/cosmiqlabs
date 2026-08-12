@@ -12,8 +12,7 @@ const item = {
   show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
 };
 
-const COLORS = ['#5C6BFA', '#00f2fe', '#4facfe', '#667eea', '#764ba2'];
-const GENDER_COLORS = { 'M': '#4facfe', 'F': '#ff758c', 'U': '#a18cd1' };
+const BRUTAL_COLORS = ['var(--palette-1)', 'var(--palette-2)', 'var(--palette-3)', 'var(--palette-4)', 'var(--palette-5)', 'var(--palette-6)'];
 
 export default function Demographics() {
   const { demographics, loading } = useInstagramData();
@@ -105,7 +104,11 @@ export default function Demographics() {
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 600 }} dy={10} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-secondary)', fontSize: 12, fontWeight: 600 }} />
                     <RechartsTooltip content={renderTooltip} cursor={{ fill: 'rgba(150, 150, 150, 0.1)' }} />
-                    <Bar dataKey="value" fill="var(--accent-color)" radius={[4, 4, 0, 0]} barSize={40} />
+                    <Bar dataKey="value" radius={[4, 4, 0, 0]} barSize={40}>
+                      {ageData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={BRUTAL_COLORS[index % BRUTAL_COLORS.length]} />
+                      ))}
+                    </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               ) : <div className="empty-state">No data available</div>}
@@ -134,7 +137,7 @@ export default function Demographics() {
                       stroke="none"
                     >
                       {genderData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={GENDER_COLORS[entry.original] || COLORS[index % COLORS.length]} />
+                        <Cell key={`cell-${index}`} fill={BRUTAL_COLORS[index % BRUTAL_COLORS.length]} />
                       ))}
                     </Pie>
                     <RechartsTooltip content={renderTooltip} />
@@ -149,7 +152,7 @@ export default function Demographics() {
                 const percent = total > 0 ? ((entry.value / total) * 100).toFixed(1) : 0;
                 return (
                   <div key={entry.name} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)' }}>
-                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: GENDER_COLORS[entry.original] || '#ccc' }} />
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: BRUTAL_COLORS[genderData.indexOf(entry) % BRUTAL_COLORS.length] }} />
                     {entry.name} ({percent}%)
                   </div>
                 );
@@ -166,7 +169,7 @@ export default function Demographics() {
               </div>
             </div>
             <div style={{ marginTop: 24 }}>
-              {countryData.length > 0 ? countryData.map(c => {
+              {countryData.length > 0 ? countryData.map((c, i) => {
                 const percent = totalCountries > 0 ? ((c.value / totalCountries) * 100).toFixed(1) : 0;
                 let countryName = c.name;
                 try { countryName = new Intl.DisplayNames(['en'], { type: 'region' }).of(c.name) || c.name; } catch (e) {}
@@ -177,10 +180,10 @@ export default function Demographics() {
                       <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
                         {countryName}
                       </div>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--accent-color)' }}>{percent}%</div>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: BRUTAL_COLORS[i % BRUTAL_COLORS.length] }}>{percent}%</div>
                     </div>
                     <div style={{ background: 'var(--bg-elevated)', borderRadius: 4, height: 6, overflow: 'hidden' }}>
-                      <div style={{ width: `${percent}%`, background: 'var(--accent-color)', height: '100%', borderRadius: 4 }} />
+                      <div style={{ width: `${percent}%`, background: BRUTAL_COLORS[i % BRUTAL_COLORS.length], height: '100%', borderRadius: 4 }} />
                     </div>
                   </div>
                 );
@@ -197,16 +200,16 @@ export default function Demographics() {
               </div>
             </div>
             <div style={{ marginTop: 24 }}>
-              {cityData.length > 0 ? cityData.map(c => {
+              {cityData.length > 0 ? cityData.map((c, i) => {
                 const percent = totalCities > 0 ? ((c.value / totalCities) * 100).toFixed(1) : 0;
                 return (
                   <div key={c.name} style={{ marginBottom: 20 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
                       <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>{c.name}</div>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--accent-color)' }}>{percent}%</div>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: BRUTAL_COLORS[i % BRUTAL_COLORS.length] }}>{percent}%</div>
                     </div>
                     <div style={{ background: 'var(--bg-elevated)', borderRadius: 4, height: 6, overflow: 'hidden' }}>
-                      <div style={{ width: `${percent}%`, background: 'var(--accent-color)', height: '100%', borderRadius: 4 }} />
+                      <div style={{ width: `${percent}%`, background: BRUTAL_COLORS[i % BRUTAL_COLORS.length], height: '100%', borderRadius: 4 }} />
                     </div>
                   </div>
                 );

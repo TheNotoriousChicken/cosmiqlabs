@@ -10,7 +10,7 @@ const CustomTooltip = ({ active, payload, label }) => {
       borderRadius: '10px', padding: '10px 14px', fontSize: '13px',
     }}>
       <div style={{ color: 'var(--text-muted)', marginBottom: 4 }}>{label}</div>
-      <div style={{ color: '#8B5CF6', fontWeight: 700 }}>ER: {payload[0]?.value?.toFixed(2)}%</div>
+      <div style={{ color: 'var(--text-primary)', fontWeight: 700 }}>ER: {payload[0]?.value?.toFixed(2)}%</div>
     </div>
   );
 };
@@ -35,7 +35,7 @@ export default function EngagementRateChart({ posts, profile, loading }) {
   return (
     <div>
       <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: 8 }}>
-        Avg ER: <span style={{ color: 'var(--brand-purple)', fontWeight: 700 }}>{avg.toFixed(2)}%</span>
+        Avg ER: <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{avg.toFixed(2)}%</span>
       </div>
       <ResponsiveContainer width="100%" height={180}>
         <BarChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
@@ -44,9 +44,10 @@ export default function EngagementRateChart({ posts, profile, loading }) {
           <YAxis tick={{ fontSize: 10, fill: 'var(--text-muted)' }} tickLine={false} axisLine={false} tickFormatter={v => `${v.toFixed(1)}%`} />
           <Tooltip content={<CustomTooltip />} />
           <Bar dataKey="er" radius={[4, 4, 0, 0]} name="Engagement Rate">
-            {data.map((entry, i) => (
-              <Cell key={i} fill={entry.er >= avg ? '#8B5CF6' : 'rgba(139,92,246,0.4)'} />
-            ))}
+            {data.map((entry, i) => {
+              const BRUTAL_COLORS = ['var(--palette-1)', 'var(--palette-2)', 'var(--palette-3)', 'var(--palette-4)', 'var(--palette-5)', 'var(--palette-6)'];
+              return <Cell key={i} fill={BRUTAL_COLORS[i % BRUTAL_COLORS.length]} />;
+            })}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
