@@ -260,7 +260,7 @@ body {
   position: absolute;
   inset: 0;
   background: #000;
-  border-radius: var(--r-md);
+  border-radius: var(--r-full);
   z-index: -1;
 }
 
