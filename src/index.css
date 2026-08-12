@@ -11,7 +11,7 @@
   --glass-border-light: rgba(255, 255, 255, 0.3);
   --glass-shadow:     0 8px 32px 0 rgba(0, 0, 0, 0.3);
   --glass-blur:       blur(16px);
-  --glass-blur-heavy: blur(40px);
+  --glass-blur-heavy: blur(24px);
 
   /* Accents */
   --accent-color:   #FF2E93; /* Vibrant pink/magenta */
@@ -125,7 +125,7 @@ body {
   padding: 40px 24px;
   
   /* Glassmorphism */
-  background: rgba(10, 10, 10, 0.4);
+  background: rgba(10, 10, 10, 0.75);
   backdrop-filter: var(--glass-blur-heavy);
   -webkit-backdrop-filter: var(--glass-blur-heavy);
   border-right: 1px solid var(--glass-border);
@@ -213,7 +213,7 @@ body {
   justify-content: space-between;
   
   /* Glassmorphism */
-  background: rgba(10, 10, 10, 0.4);
+  background: rgba(10, 10, 10, 0.75);
   backdrop-filter: var(--glass-blur-heavy);
   -webkit-backdrop-filter: var(--glass-blur-heavy);
   border-bottom: 1px solid var(--glass-border);
@@ -638,7 +638,7 @@ body {
   left: 0;
   right: 0;
   height: 70px;
-  background: rgba(10, 10, 10, 0.4);
+  background: rgba(10, 10, 10, 0.75);
   backdrop-filter: var(--glass-blur-heavy);
   -webkit-backdrop-filter: var(--glass-blur-heavy);
   border-top: 1px solid var(--glass-border);
