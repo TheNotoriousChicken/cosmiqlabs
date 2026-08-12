@@ -90,7 +90,7 @@ export default function EngagementAnalytics() {
         {/* Quick Metrics */}
         <div className="metrics-grid">
           {metrics.map((m, i) => (
-            <motion.div variants={item} key={m.label} className="glass-panel metric-card">
+            <motion.div variants={item} key={m.label} className="clay-panel metric-card">
               <div className="metric-label">{m.label}</div>
               <div className="metric-value">
                 {(() => { const SafeCountUp = CountUp.default || CountUp; return <SafeCountUp end={m.value} duration={2} separator="," decimals={m.suffix === '%' ? 2 : 0} />; })()}
@@ -102,7 +102,7 @@ export default function EngagementAnalytics() {
 
         {/* Main Charts */}
         <div className="charts-grid">
-          <motion.div variants={item} className="glass-panel chart-card">
+          <motion.div variants={item} className="clay-panel chart-card">
              <div className="chart-header">
               <div>
                 <div className="chart-title">Interaction Timeline</div>
@@ -114,7 +114,7 @@ export default function EngagementAnalytics() {
             </div>
           </motion.div>
 
-          <motion.div variants={item} className="glass-panel chart-card">
+          <motion.div variants={item} className="clay-panel chart-card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Content Distribution</div>
@@ -127,7 +127,7 @@ export default function EngagementAnalytics() {
           </motion.div>
         </div>
 
-        <motion.div variants={item} className="full-width-card glass-panel chart-card">
+        <motion.div variants={item} className="full-width-card clay-panel chart-card">
           <div className="chart-header">
             <div>
               <div className="chart-title">Engagement Rate per Post</div>
@@ -145,7 +145,7 @@ export default function EngagementAnalytics() {
         </div>
 
         {/* Heatmap */}
-        <motion.div variants={item} className="full-width-card glass-panel chart-card">
+        <motion.div variants={item} className="full-width-card clay-panel chart-card">
           <div className="chart-header">
             <div>
               <div className="chart-title">Interaction Heatmap</div>

@@ -56,12 +56,12 @@ export default function FollowerAnalytics() {
 
         <div className="metrics-grid">
           {/* Quick Stats */}
-          <motion.div variants={item} className="glass-panel metric-card">
+          <motion.div variants={item} className="clay-panel metric-card">
             <div className="metric-label">Current Followers</div>
             <div className="metric-value">{current.toLocaleString()}</div>
           </motion.div>
           
-          <motion.div variants={item} className="glass-panel metric-card">
+          <motion.div variants={item} className="clay-panel metric-card">
             <div className="metric-label">7-Day Change</div>
             <div className="metric-value" style={{ color: netChange7d > 0 ? 'var(--success)' : netChange7d < 0 ? 'var(--danger)' : 'var(--text-primary)' }}>
               {netChange7d !== null ? (netChange7d > 0 ? `+${netChange7d}` : netChange7d) : '—'}
@@ -69,7 +69,7 @@ export default function FollowerAnalytics() {
           </motion.div>
         </div>
 
-        <motion.div variants={item} className="full-width-card glass-panel chart-card" style={{ padding: '40px' }}>
+        <motion.div variants={item} className="full-width-card clay-panel chart-card" style={{ padding: '40px' }}>
           <div className="chart-header">
             <div>
               <div className="chart-title">Growth Trajectory</div>
@@ -83,7 +83,7 @@ export default function FollowerAnalytics() {
 
         {/* Table */}
         {snapshots.length > 0 && (
-          <motion.div variants={item} className="full-width-card glass-panel" style={{ padding: '40px' }}>
+          <motion.div variants={item} className="full-width-card clay-panel" style={{ padding: '40px' }}>
             <div className="chart-header" style={{ marginBottom: 32 }}>
               <div className="chart-title">Snapshot Ledger</div>
             </div>

@@ -116,7 +116,7 @@ export default function BestTimePredictor() {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-panel" 
+      className="clay-panel" 
       style={{ padding: 24, position: 'relative', overflow: 'hidden' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>

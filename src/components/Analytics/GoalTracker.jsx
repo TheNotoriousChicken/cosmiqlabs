@@ -66,7 +66,7 @@ export default function GoalTracker() {
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
-    <motion.div className="glass-panel" style={{ padding: 24, flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+    <motion.div className="clay-panel" style={{ padding: 24, flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', position: 'relative' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <h3 style={{ margin: 0, fontSize: 16, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}>
           <Target size={18} color="var(--accent-color)" /> Next Milestone

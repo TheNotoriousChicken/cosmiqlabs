@@ -4,35 +4,29 @@
    DESIGN TOKENS — Glassmorphism v1
 ═══════════════════════════════════════════ */
 :root {
-  /* Glass Tokens */
-  --glass-bg:         rgba(255, 255, 255, 0.05);
-  --glass-bg-hover:   rgba(255, 255, 255, 0.1);
-  --glass-border:     rgba(255, 255, 255, 0.15);
-  --glass-border-light: rgba(255, 255, 255, 0.3);
-  --glass-shadow:     0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  --glass-blur:       blur(16px);
-  --glass-blur-heavy: blur(24px);
+  /* Claymorphism Tokens */
+  --clay-bg:          #FFFFFF;
+  --clay-bg-alt:      #F4F7FE;
+  --clay-shadow:      8px 8px 16px rgba(112, 126, 174, 0.15), 
+                      inset -6px -6px 12px rgba(112, 126, 174, 0.1), 
+                      inset 6px 6px 12px rgba(255, 255, 255, 1);
+  --clay-shadow-sm:   4px 4px 8px rgba(112, 126, 174, 0.1), 
+                      inset -3px -3px 6px rgba(112, 126, 174, 0.1), 
+                      inset 3px 3px 6px rgba(255, 255, 255, 1);
 
   /* Accents */
-  --accent-color:   #FF2E93; /* Vibrant pink/magenta */
-  --accent-gradient: linear-gradient(135deg, #FF2E93 0%, #FF8000 100%);
-  --accent-glow:    rgba(255, 46, 147, 0.4);
+  --accent-color:   #4318FF; /* Vibrant Blue */
+  --accent-gradient: linear-gradient(135deg, #4318FF 0%, #868CFF 100%);
+  --accent-glow:    rgba(67, 24, 255, 0.2);
   
-  --success:        #00E676;
-  --danger:         #FF1744;
-  --warning:        #FFD600;
+  --success:        #05CD99;
+  --danger:         #EE5D50;
+  --warning:        #FFCE20;
 
-  /* Legacy Backward Compatibility Mapping */
-  --bg-base:        rgba(0, 0, 0, 0.2); 
-  --neu-drop:       var(--glass-shadow);
-  --neu-drop-sm:    0 4px 12px 0 rgba(0, 0, 0, 0.2);
-  --neu-inner:      inset 0 0 0 1px var(--glass-border);
-  --neu-inner-sm:   inset 0 0 0 1px var(--glass-border-light);
-
-  /* Text - Dark Mode Base */
-  --text-primary:   #FFFFFF; 
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted:     rgba(255, 255, 255, 0.4);
+  /* Text - Light Mode Base */
+  --text-primary:   #2B3674; 
+  --text-secondary: #707EAE;
+  --text-muted:     #A3AED0;
 
   /* Typography */
   --font-sans: 'Outfit', system-ui, sans-serif;
@@ -43,9 +37,9 @@
   --topbar-h:  90px;
   
   /* Radius */
-  --r-sm:   12px;
-  --r-md:   20px;
-  --r-lg:   30px;
+  --r-sm:   16px;
+  --r-md:   24px;
+  --r-lg:   32px;
   --r-full: 9999px;
 }
 
@@ -65,21 +59,7 @@ body {
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   overflow-x: hidden;
-  
-  /* Beautiful deep mesh gradient */
-  background: 
-    radial-gradient(circle at 15% 50%, rgba(131, 58, 180, 0.5), transparent 50%),
-    radial-gradient(circle at 85% 30%, rgba(253, 29, 29, 0.5), transparent 50%),
-    radial-gradient(circle at 50% 80%, rgba(252, 176, 69, 0.5), transparent 50%),
-    #0a0a0a;
-  background-size: 150% 150%;
-  animation: meshAnim 15s ease infinite;
-}
-
-@keyframes meshAnim {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  background: var(--clay-bg-alt);
 }
 
 ::selection {
@@ -115,21 +95,16 @@ body {
 ═══════════════════════════════════════════ */
 .sidebar {
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
   bottom: 0;
   width: var(--sidebar-w);
-  display: flex;
-  flex-direction: column;
   z-index: 100;
   padding: 40px 24px;
-  
-  /* Glassmorphism */
-  background: rgba(10, 10, 10, 0.75);
-  backdrop-filter: var(--glass-blur-heavy);
-  -webkit-backdrop-filter: var(--glass-blur-heavy);
-  border-right: 1px solid var(--glass-border);
-  box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+  background: var(--clay-bg);
+  box-shadow: 4px 0 20px rgba(112, 126, 174, 0.15);
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-brand {
@@ -211,13 +186,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
-  /* Glassmorphism */
-  background: rgba(10, 10, 10, 0.75);
-  backdrop-filter: var(--glass-blur-heavy);
-  -webkit-backdrop-filter: var(--glass-blur-heavy);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  background: var(--clay-bg);
+  box-shadow: 0 4px 20px rgba(112, 126, 174, 0.15);
   margin-bottom: 24px;
 }
 
@@ -335,21 +305,19 @@ body {
 }
 
 /* ═══════════════════════════════════════════
-   GLASS PANELS (Cards)
+   CLAY PANELS (Cards)
 ═══════════════════════════════════════════ */
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+.clay-panel {
+  background: var(--clay-bg);
   border-radius: var(--r-lg);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--clay-shadow);
   position: relative;
   overflow: hidden;
+  border: none;
 }
 
 /* Highlight flare on cards */
-.glass-panel::before {
+.clay-panel::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; height: 1px;
@@ -632,22 +600,16 @@ body {
    MOBILE NAV BAR (Frosted Glass)
 ═══════════════════════════════════════════ */
 .mobile-nav {
-  display: none;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 70px;
-  background: rgba(10, 10, 10, 0.75);
-  backdrop-filter: var(--glass-blur-heavy);
-  -webkit-backdrop-filter: var(--glass-blur-heavy);
-  border-top: 1px solid var(--glass-border);
-  z-index: 1000;
-  box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+  z-index: 100;
+  background: var(--clay-bg);
+  box-shadow: 0 -4px 20px rgba(112, 126, 174, 0.15);
+  display: flex;
   justify-content: space-around;
-  align-items: center;
-  padding: 0 16px;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding: 12px 24px calc(12px + env(safe-area-inset-bottom));
 }
 
 .mobile-nav-link {

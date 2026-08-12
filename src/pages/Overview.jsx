@@ -44,7 +44,7 @@ export default function Overview() {
         animate="show"
       >
         {/* Profile Hero */}
-        <motion.div variants={item} className="full-width-card glass-panel" style={{ padding: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <motion.div variants={item} className="full-width-card clay-panel" style={{ padding: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {profile ? (
             <>
               <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
@@ -94,7 +94,7 @@ export default function Overview() {
 
         {/* Charts Row */}
         <motion.div className="charts-grid">
-          <motion.div variants={item} className="glass-panel chart-card">
+          <motion.div variants={item} className="clay-panel chart-card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Growth Trajectory</div>
@@ -106,7 +106,7 @@ export default function Overview() {
             </div>
           </motion.div>
 
-          <motion.div variants={item} className="glass-panel chart-card">
+          <motion.div variants={item} className="clay-panel chart-card">
             <div className="chart-header">
               <div>
                 <div className="chart-title">Engagement Matrix</div>

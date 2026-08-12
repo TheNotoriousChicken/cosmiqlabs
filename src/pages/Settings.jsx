@@ -98,7 +98,7 @@ export default function Settings() {
         <div className="charts-grid">
           
           {/* Access Token */}
-          <motion.div variants={item} className="full-width-card glass-panel chart-card" style={{ gridColumn: 'span 2' }}>
+          <motion.div variants={item} className="full-width-card clay-panel chart-card" style={{ gridColumn: 'span 2' }}>
             <div className="chart-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <div style={{ background: 'var(--bg-base)', padding: 16, borderRadius: '50%', color: 'var(--accent-color)', boxShadow: 'var(--neu-inner-sm)' }}>
@@ -143,7 +143,7 @@ export default function Settings() {
           </motion.div>
 
           {/* Mode toggle */}
-          <motion.div variants={item} className="full-width-card glass-panel chart-card" style={{ gridColumn: 'span 2' }}>
+          <motion.div variants={item} className="full-width-card clay-panel chart-card" style={{ gridColumn: 'span 2' }}>
             <div className="chart-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <div style={{ background: 'var(--bg-base)', padding: 16, borderRadius: '50%', color: 'var(--warning)', boxShadow: 'var(--neu-inner-sm)' }}>
@@ -185,7 +185,7 @@ export default function Settings() {
           </motion.div>
 
           {/* Manual Entry */}
-          <motion.div variants={item} className="glass-panel chart-card">
+          <motion.div variants={item} className="clay-panel chart-card">
             <div className="chart-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <PlusCircle size={24} color="var(--text-secondary)" />
@@ -207,7 +207,7 @@ export default function Settings() {
           </motion.div>
 
           {/* Data Management */}
-          <motion.div variants={item} className="glass-panel chart-card">
+          <motion.div variants={item} className="clay-panel chart-card">
             <div className="chart-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <Database size={24} color="var(--text-secondary)" />
