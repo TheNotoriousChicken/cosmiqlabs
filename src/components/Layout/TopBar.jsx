@@ -15,11 +15,7 @@ export default function TopBar({ title, subtitle }) {
   ];
 
   return (
-    <motion.div 
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className="topbar"
-    >
+    <div className="topbar">
       <div>
         <div className="topbar-title">{title}</div>
         {subtitle && <div className="topbar-subtitle">{subtitle}</div>}
@@ -64,6 +60,6 @@ export default function TopBar({ title, subtitle }) {
           <RefreshCw size={16} className={loading ? 'spin' : ''} />
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }
