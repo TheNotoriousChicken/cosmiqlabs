@@ -4,14 +4,14 @@ const TT = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
     <div style={{ 
-      background: 'rgba(10, 10, 10, 0.85)', 
-      backdropFilter: 'blur(12px)',
-      border: '1px solid var(--border-strong)', 
-      borderRadius: 12, 
+      background: 'var(--bg-base)', 
+      border: 'var(--brutal-border)', 
+      borderRadius: 'var(--r-md)', 
       padding: '12px 16px', 
       fontSize: 12, 
       fontFamily: 'var(--font-mono)',
-      boxShadow: 'var(--shadow-glass)'
+      boxShadow: 'var(--brutal-shadow)',
+      color: 'var(--text-primary)'
     }}>
       <div style={{ color: 'var(--text-muted)', marginBottom: 10, fontSize: 11 }}>{label}</div>
       {payload.map((p, i) => (

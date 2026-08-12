@@ -71,7 +71,7 @@ export default function Demographics() {
   const renderTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div style={{ background: 'var(--bg-base)', padding: '8px 12px', borderRadius: 8, boxShadow: 'var(--neu-drop-sm)', fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
+        <div style={{ background: 'var(--bg-base)', padding: '8px 12px', border: 'var(--brutal-border)', borderRadius: 'var(--r-md)', boxShadow: 'var(--brutal-shadow)', fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
           {payload[0].name}: {payload[0].value.toLocaleString()}
         </div>
       );

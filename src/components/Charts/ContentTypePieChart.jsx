@@ -7,8 +7,9 @@ const CustomTooltip = ({ active, payload }) => {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: 'var(--bg-overlay)', border: '1px solid var(--border-default)',
-      borderRadius: '10px', padding: '10px 14px', fontSize: '13px',
+      background: 'var(--bg-base)', border: 'var(--brutal-border)',
+      borderRadius: 'var(--r-md)', padding: '10px 14px', fontSize: '13px',
+      boxShadow: 'var(--brutal-shadow)', color: 'var(--text-primary)'
     }}>
       <div style={{ color: payload[0].payload.fill, fontWeight: 700 }}>{payload[0].name}</div>
       <div style={{ color: 'var(--text-secondary)' }}>{payload[0].value} posts ({((payload[0].payload.percent || 0) * 100).toFixed(0)}%)</div>

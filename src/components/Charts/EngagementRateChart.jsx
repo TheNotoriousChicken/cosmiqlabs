@@ -6,8 +6,9 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: 'var(--bg-overlay)', border: '1px solid var(--border-default)',
-      borderRadius: '10px', padding: '10px 14px', fontSize: '13px',
+      background: 'var(--bg-base)', border: 'var(--brutal-border)',
+      borderRadius: 'var(--r-md)', padding: '10px 14px', fontSize: '13px',
+      boxShadow: 'var(--brutal-shadow)', color: 'var(--text-primary)'
     }}>
       <div style={{ color: 'var(--text-muted)', marginBottom: 4 }}>{label}</div>
       <div style={{ color: 'var(--text-primary)', fontWeight: 700 }}>ER: {payload[0]?.value?.toFixed(2)}%</div>
