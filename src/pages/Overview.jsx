@@ -159,7 +159,7 @@ export default function Overview() {
         </motion.div>
 
         {/* Secondary Metrics Row */}
-        <motion.div className="metrics-grid">
+        <motion.div className="metrics-grid alt-colors-1">
           {[
             { label: 'Total Likes', value: totals.likes },
             { label: 'Comments', value: totals.comments },

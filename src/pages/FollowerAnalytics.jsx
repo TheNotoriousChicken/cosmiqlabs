@@ -54,7 +54,7 @@ export default function FollowerAnalytics() {
           <GoalTracker />
         </div>
 
-        <div className="metrics-grid">
+        <div className="metrics-grid alt-colors-1">
           {/* Quick Stats */}
           <motion.div variants={item} className="brutal-panel metric-card">
             <div className="metric-label">Current Followers</div>

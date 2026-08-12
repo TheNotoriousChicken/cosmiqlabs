@@ -88,7 +88,7 @@ export default function EngagementAnalytics() {
         animate="show"
       >
         {/* Quick Metrics */}
-        <div className="metrics-grid">
+        <div className="metrics-grid alt-colors-2">
           {metrics.map((m, i) => (
             <motion.div variants={item} key={m.label} className="brutal-panel metric-card">
               <div className="metric-label">{m.label}</div>

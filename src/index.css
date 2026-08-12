@@ -362,12 +362,28 @@ body {
 /* ═══════════════════════════════════════════
    METRIC CARDS & COLOR POP
 ═══════════════════════════════════════════ */
-.metrics-grid > :nth-child(6n + 1), .metrics-grid > :nth-child(6n + 1) .metric-card { background: var(--palette-2) !important; }
-.metrics-grid > :nth-child(6n + 2), .metrics-grid > :nth-child(6n + 2) .metric-card { background: var(--palette-3) !important; }
-.metrics-grid > :nth-child(6n + 3), .metrics-grid > :nth-child(6n + 3) .metric-card { background: var(--palette-1) !important; }
-.metrics-grid > :nth-child(6n + 4), .metrics-grid > :nth-child(6n + 4) .metric-card { background: var(--palette-6) !important; }
-.metrics-grid > :nth-child(6n + 5), .metrics-grid > :nth-child(6n + 5) .metric-card { background: var(--palette-5) !important; }
-.metrics-grid > :nth-child(6n + 6), .metrics-grid > :nth-child(6n + 6) .metric-card { background: var(--palette-4) !important; }
+.metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 1), .metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 1) .metric-card { background: var(--palette-2) !important; }
+.metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 2), .metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 2) .metric-card { background: var(--palette-3) !important; }
+.metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 3), .metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 3) .metric-card { background: var(--palette-1) !important; }
+.metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 4), .metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 4) .metric-card { background: var(--palette-6) !important; }
+.metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 5), .metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 5) .metric-card { background: var(--palette-5) !important; }
+.metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 6), .metrics-grid:not(.alt-colors-1):not(.alt-colors-2) > :nth-child(6n + 6) .metric-card { background: var(--palette-4) !important; }
+
+/* Alternate Sequence 1 */
+.metrics-grid.alt-colors-1 > :nth-child(6n + 1), .metrics-grid.alt-colors-1 > :nth-child(6n + 1) .metric-card { background: var(--palette-5) !important; }
+.metrics-grid.alt-colors-1 > :nth-child(6n + 2), .metrics-grid.alt-colors-1 > :nth-child(6n + 2) .metric-card { background: var(--palette-4) !important; }
+.metrics-grid.alt-colors-1 > :nth-child(6n + 3), .metrics-grid.alt-colors-1 > :nth-child(6n + 3) .metric-card { background: var(--palette-2) !important; }
+.metrics-grid.alt-colors-1 > :nth-child(6n + 4), .metrics-grid.alt-colors-1 > :nth-child(6n + 4) .metric-card { background: var(--palette-1) !important; }
+.metrics-grid.alt-colors-1 > :nth-child(6n + 5), .metrics-grid.alt-colors-1 > :nth-child(6n + 5) .metric-card { background: var(--palette-6) !important; }
+.metrics-grid.alt-colors-1 > :nth-child(6n + 6), .metrics-grid.alt-colors-1 > :nth-child(6n + 6) .metric-card { background: var(--palette-3) !important; }
+
+/* Alternate Sequence 2 */
+.metrics-grid.alt-colors-2 > :nth-child(6n + 1), .metrics-grid.alt-colors-2 > :nth-child(6n + 1) .metric-card { background: var(--palette-1) !important; }
+.metrics-grid.alt-colors-2 > :nth-child(6n + 2), .metrics-grid.alt-colors-2 > :nth-child(6n + 2) .metric-card { background: var(--palette-6) !important; }
+.metrics-grid.alt-colors-2 > :nth-child(6n + 3), .metrics-grid.alt-colors-2 > :nth-child(6n + 3) .metric-card { background: var(--palette-4) !important; }
+.metrics-grid.alt-colors-2 > :nth-child(6n + 4), .metrics-grid.alt-colors-2 > :nth-child(6n + 4) .metric-card { background: var(--palette-3) !important; }
+.metrics-grid.alt-colors-2 > :nth-child(6n + 5), .metrics-grid.alt-colors-2 > :nth-child(6n + 5) .metric-card { background: var(--palette-2) !important; }
+.metrics-grid.alt-colors-2 > :nth-child(6n + 6), .metrics-grid.alt-colors-2 > :nth-child(6n + 6) .metric-card { background: var(--palette-5) !important; }
 
 .metric-card {
   padding: 32px;
