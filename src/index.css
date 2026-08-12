@@ -617,9 +617,13 @@ body {
   background: var(--brutal-bg);
   border-top: var(--brutal-border);
   box-shadow: 0 -4px 0px #000000;
-  display: flex;
+  display: none; /* Hidden on desktop */
   justify-content: space-around;
   padding: 12px 24px calc(12px + env(safe-area-inset-bottom));
+}
+
+@media (max-width: 768px) {
+  .mobile-nav { display: flex; }
 }
 
 .mobile-nav-link {
@@ -642,5 +646,6 @@ body {
 }
 
 .mobile-nav-link.active {
-  color: #fff;
+  color: var(--accent-color);
+
 }
