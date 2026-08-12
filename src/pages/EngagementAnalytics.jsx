@@ -68,7 +68,10 @@ export default function EngagementAnalytics() {
     });
   }
 
-  const maxHeatVal = Math.max(...Object.values(heatmap).flatMap(d => Object.values(d)));
+  const allValues = Object.values(heatmap).flatMap(d => Object.values(d));
+  const maxHeatVal = Math.max(...allValues);
+  // Find the minimum non-zero value to use as a baseline for scaling
+  const minHeatVal = Math.min(...allValues.filter(v => v > 0));
 
   const metrics = [
     { label: 'Avg Eng. Rate', value: avgEngagementRate, suffix: '%' },
@@ -175,24 +178,32 @@ export default function EngagementAnalytics() {
                     <div style={{ display: 'flex', flex: 1, gap: 8 }}>
                       {HOURS.map(h => {
                         const val = heatmap[day][h];
-                        const intensity = maxHeatVal > 0 ? val / maxHeatVal : 0;
+                        let intensity = 0;
+                        if (val > 0) {
+                          if (maxHeatVal > minHeatVal) {
+                            intensity = 0.2 + ((val - minHeatVal) / (maxHeatVal - minHeatVal)) * 0.8;
+                          } else {
+                            intensity = 0.5;
+                          }
+                        }
                         return (
                           <div
                             key={h}
-                            title={`${day} ${h}:00 — ${val} online followers`}
+                            title={`${day} ${h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`} — ${val} online followers`}
                             style={{
                               flex: 1,
                               height: 36,
                               borderRadius: 8,
                               background: intensity > 0
                                 ? `rgba(92, 107, 250, ${0.1 + intensity * 0.9})`
-                                : 'var(--bg-base)',
-                              boxShadow: intensity > 0 ? 'none' : 'var(--neu-inner-sm)',
+                                : 'var(--glass-bg)',
+                              border: intensity > 0 ? '1px solid transparent' : '1px solid var(--glass-border-light)',
+                              boxShadow: intensity > 0 ? '0 4px 12px rgba(92, 107, 250, 0.2)' : 'none',
                               transition: 'all 0.2s',
                               cursor: intensity > 0 ? 'pointer' : 'default',
                             }}
-                            onMouseEnter={e => { if(intensity>0) { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.zIndex = 10; e.currentTarget.style.boxShadow = 'var(--neu-drop-sm)'; } }}
-                            onMouseLeave={e => { if(intensity>0) { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.zIndex = 1; e.currentTarget.style.boxShadow = 'none'; } }}
+                            onMouseEnter={e => { if(intensity>0) { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.zIndex = 10; e.currentTarget.style.boxShadow = '0 8px 24px rgba(92, 107, 250, 0.4)'; } }}
+                            onMouseLeave={e => { if(intensity>0) { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.zIndex = 1; e.currentTarget.style.boxShadow = '0 4px 12px rgba(92, 107, 250, 0.2)'; } }}
                           />
                         );
                       })}
