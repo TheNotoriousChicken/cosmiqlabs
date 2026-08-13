@@ -127,7 +127,7 @@ export default function Overview() {
             <MetricCard label="Total Reach" value={totals.reach} loading={loading && !profile} />
           </motion.div>
           <motion.div variants={item}>
-            <MetricCard label="Total Impressions" value={totals.impressions} loading={loading && !profile} />
+            <MetricCard label="Total Views" value={totals.views} loading={loading && !profile} />
           </motion.div>
         </motion.div>
 
