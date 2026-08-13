@@ -3,6 +3,7 @@ import { useInstagramData } from '../hooks/useInstagramData';
 import MetricCard from '../components/Cards/MetricCard';
 import { ArrowLeft, ExternalLink, MessageCircle, Heart, Bookmark, Share2, PlayCircle, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import TopBar from '../components/Layout/TopBar';
 
 const container = {
@@ -100,6 +101,7 @@ export default function PostDetail() {
                     {engagementRate}% <span style={{ fontSize: 16, color: 'var(--text-muted)', fontWeight: 600 }}>Eng. Rate</span>
                   </div>
                 </div>
+                <LiveUptimeCounter timestamp={post.timestamp} />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
@@ -134,6 +136,41 @@ function MetricBox({ icon: Icon, label, value }) {
       </div>
       <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--text-primary)' }}>
         {value?.toLocaleString() || '0'}
+      </div>
+    </div>
+  );
+}
+
+function LiveUptimeCounter({ timestamp }) {
+  const [timePassed, setTimePassed] = useState('');
+
+  useEffect(() => {
+    const calculateTime = () => {
+      if (!timestamp) return;
+      const now = new Date();
+      const past = new Date(timestamp);
+      const diff = now - past;
+      if (diff < 0) return setTimePassed('00:00:00:00');
+      
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / 1000 / 60) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+      
+      const pad = (num) => num.toString().padStart(2, '0');
+      setTimePassed(`${pad(d)}:${pad(h)}:${pad(m)}:${pad(s)}`);
+    };
+    
+    calculateTime();
+    const interval = setInterval(calculateTime, 1000);
+    return () => clearInterval(interval);
+  }, [timestamp]);
+
+  return (
+    <div style={{ textAlign: 'right' }}>
+      <div style={{ fontSize: 13, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800, marginBottom: 8 }}>Time Elapsed</div>
+      <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--palette-1)', letterSpacing: '2px', fontFamily: 'var(--font-mono)', textShadow: '2px 2px 0px #000', WebkitTextStroke: '1.5px #000' }}>
+        {timePassed}
       </div>
     </div>
   );
