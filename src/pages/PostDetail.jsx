@@ -101,7 +101,6 @@ export default function PostDetail() {
                     {engagementRate}% <span style={{ fontSize: 16, color: 'var(--text-muted)', fontWeight: 600 }}>Eng. Rate</span>
                   </div>
                 </div>
-                <LiveUptimeCounter timestamp={post.timestamp} />
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
@@ -118,6 +117,10 @@ export default function PostDetail() {
                 <MetricBox icon={Eye} label="Reach" value={post.insights?.reach} />
                 <MetricBox icon={PlayCircle} label="Views" value={post.insights?.views} />
               </div>
+            </div>
+
+            <div className="brutal-panel" style={{ padding: '40px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <LiveUptimeCounter timestamp={post.timestamp} />
             </div>
           </motion.div>
         </div>
@@ -167,9 +170,9 @@ function LiveUptimeCounter({ timestamp }) {
   }, [timestamp]);
 
   return (
-    <div style={{ textAlign: 'right' }}>
-      <div style={{ fontSize: 13, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800, marginBottom: 8 }}>Time Elapsed</div>
-      <div style={{ fontSize: 32, fontWeight: 900, color: 'var(--palette-1)', letterSpacing: '2px', fontFamily: 'var(--font-mono)', textShadow: '2px 2px 0px #000', WebkitTextStroke: '1.5px #000' }}>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: 13, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800, marginBottom: 12 }}>Time Since Upload</div>
+      <div style={{ fontSize: 42, fontWeight: 900, color: 'var(--palette-1)', letterSpacing: '2px', fontFamily: 'var(--font-mono)', textShadow: '3px 3px 0px #000', WebkitTextStroke: '2px #000' }}>
         {timePassed}
       </div>
     </div>
