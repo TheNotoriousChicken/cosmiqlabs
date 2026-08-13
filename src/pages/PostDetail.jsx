@@ -58,7 +58,7 @@ export default function PostDetail() {
         <div className="charts-grid">
           {/* Left Column: Media & Caption */}
           <motion.div variants={item} style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-            <div className="brutal-panel" style={{ padding: 24 }}>
+            <div className="brutal-panel" style={{ padding: 24, background: 'var(--palette-2)' }}>
               {post.thumbnail_url || post.media_url ? (
                 <img 
                   src={post.thumbnail_url || post.media_url} 
@@ -72,13 +72,13 @@ export default function PostDetail() {
               )}
             </div>
 
-            <div className="brutal-panel" style={{ padding: 32 }}>
-              <h3 style={{ fontSize: 16, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 16 }}>Caption</h3>
-              <p style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--text-primary)', whiteSpace: 'pre-wrap' }}>
+            <div className="brutal-panel" style={{ padding: 32, background: 'var(--palette-5)' }}>
+              <h3 style={{ fontSize: 16, fontWeight: 900, textTransform: 'uppercase', letterSpacing: 1, color: '#000', marginBottom: 16 }}>Caption</h3>
+              <p style={{ fontSize: 16, lineHeight: 1.8, color: '#000', fontWeight: 600, whiteSpace: 'pre-wrap' }}>
                 {post.caption || 'No caption.'}
               </p>
               
-              <div style={{ marginTop: 32, paddingTop: 32, borderTop: '2px dashed var(--shadow-light)' }}>
+              <div style={{ marginTop: 32, paddingTop: 32, borderTop: '3px solid #000' }}>
                 <a 
                   href={post.permalink} 
                   target="_blank" 
@@ -93,12 +93,12 @@ export default function PostDetail() {
 
           {/* Right Column: Deep Metrics */}
           <motion.div variants={item} style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-            <div className="brutal-panel" style={{ padding: 32 }}>
+            <div className="brutal-panel" style={{ padding: 32, background: 'var(--palette-4)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
                 <div>
-                  <div style={{ fontSize: 16, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800, marginBottom: 8 }}>Performance Score</div>
-                  <div style={{ fontSize: 48, fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-1px' }}>
-                    {engagementRate}% <span style={{ fontSize: 16, color: 'var(--text-muted)', fontWeight: 600 }}>Eng. Rate</span>
+                  <div style={{ fontSize: 16, color: '#000', textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 900, marginBottom: 8 }}>Performance Score</div>
+                  <div style={{ fontSize: 56, fontWeight: 900, color: '#000', letterSpacing: '-2px' }}>
+                    {engagementRate}% <span style={{ fontSize: 18, color: '#000', fontWeight: 700, letterSpacing: 0 }}>Eng. Rate</span>
                   </div>
                 </div>
               </div>
@@ -111,8 +111,8 @@ export default function PostDetail() {
               </div>
             </div>
 
-            <div className="brutal-panel" style={{ padding: 32 }}>
-              <h3 style={{ fontSize: 16, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, color: 'var(--text-secondary)', marginBottom: 24 }}>Discovery</h3>
+            <div className="brutal-panel" style={{ padding: 32, background: 'var(--palette-3)' }}>
+              <h3 style={{ fontSize: 16, fontWeight: 900, textTransform: 'uppercase', letterSpacing: 1, color: '#000', marginBottom: 24 }}>Discovery</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                 <MetricBox icon={Eye} label="Reach" value={post.insights?.reach} />
                 <MetricBox icon={PlayCircle} label="Views" value={post.insights?.views} />
@@ -132,12 +132,12 @@ export default function PostDetail() {
 
 function MetricBox({ icon: Icon, label, value }) {
   return (
-    <div style={{ background: 'var(--bg-base)', borderRadius: 'var(--r-md)', padding: 24, boxShadow: 'var(--neu-inner-sm)', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'var(--text-secondary)', marginBottom: 12 }}>
-        <Icon size={18} />
-        <span style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1 }}>{label}</span>
+    <div style={{ background: '#fff', border: '3px solid #000', borderRadius: '0', padding: 24, boxShadow: '4px 4px 0px #000', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: '#000', marginBottom: 12 }}>
+        <Icon size={20} strokeWidth={3} />
+        <span style={{ fontSize: 14, fontWeight: 900, textTransform: 'uppercase', letterSpacing: 1 }}>{label}</span>
       </div>
-      <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--text-primary)' }}>
+      <div style={{ fontSize: 32, fontWeight: 900, color: '#000', letterSpacing: '-1px' }}>
         {value?.toLocaleString() || '0'}
       </div>
     </div>
