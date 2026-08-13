@@ -119,7 +119,7 @@ export default function PostDetail() {
               </div>
             </div>
 
-            <div className="brutal-panel" style={{ padding: '40px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="brutal-panel" style={{ padding: '40px 32px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--palette-1)' }}>
               <LiveUptimeCounter timestamp={post.timestamp} />
             </div>
           </motion.div>
@@ -171,8 +171,8 @@ function LiveUptimeCounter({ timestamp }) {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: 13, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800, marginBottom: 12 }}>Time Since Upload</div>
-      <div style={{ fontSize: 42, fontWeight: 900, color: 'var(--palette-1)', letterSpacing: '2px', fontFamily: 'var(--font-mono)', textShadow: '3px 3px 0px #000', WebkitTextStroke: '2px #000' }}>
+      <div style={{ fontSize: 14, color: '#000', textTransform: 'uppercase', letterSpacing: 2, fontWeight: 800, marginBottom: 12 }}>Time Since Upload</div>
+      <div style={{ fontSize: 56, fontWeight: 900, color: '#000', letterSpacing: '-2px', fontFamily: 'var(--font-mono)' }}>
         {timePassed}
       </div>
     </div>
