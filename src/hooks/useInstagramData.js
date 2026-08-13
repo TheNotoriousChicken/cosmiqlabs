@@ -86,11 +86,12 @@ export const useInstagramData = () => {
       likes: acc.likes + (p.like_count || 0),
       comments: acc.comments + (p.comments_count || 0),
       reach: acc.reach + (p.insights?.reach || 0),
+      impressions: acc.impressions + (p.insights?.impressions || 0),
       views: acc.views + (p.insights?.views || 0),
       saves: acc.saves + (p.insights?.saved || 0),
       shares: acc.shares + (p.insights?.shares || 0),
     }),
-    { likes: 0, comments: 0, reach: 0, views: 0, saves: 0, shares: 0 }
+    { likes: 0, comments: 0, reach: 0, impressions: 0, views: 0, saves: 0, shares: 0 }
   );
 
   const avgEngagementRate =
