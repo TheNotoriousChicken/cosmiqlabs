@@ -162,7 +162,7 @@ export default function EngagementAnalytics() {
               <div className="empty-state-text">Sync more content to generate heatmap.</div>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto' }}>
+            <div style={{ overflowX: 'auto', paddingTop: 40, marginTop: -40, paddingBottom: 20, marginBottom: -20 }}>
               <div style={{ minWidth: 720 }}>
 
                 {/* Hour axis labels */}
