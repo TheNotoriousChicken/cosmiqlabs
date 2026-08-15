@@ -9,7 +9,8 @@ import toast from 'react-hot-toast';
 // Simple markdown -> HTML renderer
 function renderMarkdown(text) {
   return text
-    // Headers
+    // Headers — most specific (####) first to avoid partial matches
+    .replace(/^#### (.+)$/gm, '<h5 style="margin:10px 0 2px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;">$1</h5>')
     .replace(/^### (.+)$/gm, '<h4 style="margin:10px 0 4px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;">$1</h4>')
     .replace(/^## (.+)$/gm, '<h3 style="margin:12px 0 4px;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;">$1</h3>')
     .replace(/^# (.+)$/gm, '<h2 style="margin:12px 0 6px;font-size:15px;font-weight:900;text-transform:uppercase;">$1</h2>')
@@ -24,6 +25,8 @@ function renderMarkdown(text) {
     .replace(/^\d+\. (.+)$/gm, '<li style="margin:3px 0;padding-left:4px;">$1</li>')
     // Wrap consecutive <li> in <ul>
     .replace(/(<li.*<\/li>)/gs, '<ul style="margin:6px 0;padding-left:16px;list-style:disc;">$1</ul>')
+    // Horizontal rules
+    .replace(/^---$/gm, '<hr style="border:none;border-top:2px solid #000;margin:12px 0;"/>')
     // Line breaks
     .replace(/\n\n/g, '<br/><br/>')
     .replace(/\n/g, '<br/>');
