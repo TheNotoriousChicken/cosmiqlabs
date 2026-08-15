@@ -31,7 +31,7 @@ export default function FollowerAnalytics() {
       const diff = (new Date(now.timestamp) - new Date(s.timestamp)) / 86400000;
       return diff >= 7;
     });
-    return week ? now.followers - week.followers : null;
+    return week ? now.followers_count - week.followers_count : null;
   })();
 
   const nextMilestone = MILESTONES.find(m => m > current);

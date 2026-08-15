@@ -1,6 +1,7 @@
 import MetricCard from '../components/Cards/MetricCard';
 import FollowerGrowthChart from '../components/Charts/FollowerGrowthChart';
 import EngagementChart from '../components/Charts/EngagementChart';
+import LivePostTimer from '../components/Analytics/LivePostTimer';
 import { useInstagramData } from '../hooks/useInstagramData';
 import { useAppStore } from '../store/useAppStore';
 import { useEffect } from 'react';
@@ -114,6 +115,8 @@ export default function Overview() {
             <div style={{ width: '100%', height: 100 }} className="skeleton" />
           )}
         </motion.div>
+
+        <LivePostTimer latestPost={filteredPosts?.[0]} />
 
         {/* Top Metrics Row */}
         <motion.div className="metrics-grid">

@@ -35,7 +35,7 @@ export default function Settings() {
     const count = parseInt(manualFollowers, 10);
     if (!count || count < 0) return toast.error('Enter a valid follower count');
     addSnapshot({
-      followers: count,
+      followers_count: count,
       source: 'manual',
       timestamp: manualDate ? new Date(manualDate).toISOString() : new Date().toISOString(),
     });
@@ -64,8 +64,8 @@ export default function Settings() {
         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
         .map((s, i, arr) => [
           new Date(s.timestamp).toLocaleString(),
-          s.followers,
-          i > 0 ? s.followers - arr[i - 1].followers : 0,
+          s.followers_count,
+          i > 0 ? s.followers_count - arr[i - 1].followers_count : 0,
           s.source || 'auto',
         ]),
     ];
