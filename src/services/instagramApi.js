@@ -48,6 +48,38 @@ export const fetchPostInsights = async (token, mediaId, mediaType) => {
   }
 };
 
+// ─── Comments ─────────────────────────────────────────────────────────────────
+export const fetchPostComments = async (token, mediaId) => {
+  try {
+    const { data } = await api.get(`/${mediaId}/comments`, {
+      params: {
+        fields: 'id,text,username,timestamp,like_count',
+        access_token: token,
+      },
+    });
+    return data.data || [];
+  } catch (err) {
+    console.error('Error fetching comments:', err?.response?.data || err.message);
+    return [];
+  }
+};
+
+export const likeComment = async (token, commentId) => {
+  try {
+    const { data } = await api.post(`/${IG_ID}/likes`, null, {
+      params: {
+        comment_id: commentId,
+        access_token: token,
+      },
+    });
+    return data;
+  } catch (err) {
+    console.error('Error liking comment:', err?.response?.data || err.message);
+    throw err;
+  }
+};
+
+
 // ─── Account Insights ─────────────────────────────────────────────────────────
 export const fetchAccountInsights = async (token, period = 'day', since, until) => {
   const params = {

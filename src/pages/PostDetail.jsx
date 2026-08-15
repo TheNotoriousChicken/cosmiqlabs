@@ -5,6 +5,8 @@ import { ArrowLeft, ExternalLink, MessageCircle, Heart, Bookmark, Share2, PlayCi
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import TopBar from '../components/Layout/TopBar';
+import { fetchPostComments, likeComment } from '../services/instagramApi';
+import toast from 'react-hot-toast';
 
 const container = {
   hidden: { opacity: 0 },
@@ -19,9 +21,52 @@ const item = {
 export default function PostDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { filteredPosts, profile } = useInstagramData();
+  const { filteredPosts, profile, accessToken } = useInstagramData();
   
   const post = filteredPosts.find(p => p.id === id);
+
+  const [comments, setComments] = useState([]);
+  const [loadingComments, setLoadingComments] = useState(false);
+  const [likingStatus, setLikingStatus] = useState({ active: false, current: 0, total: 0 });
+
+  useEffect(() => {
+    if (post && accessToken) {
+      setLoadingComments(true);
+      fetchPostComments(accessToken, post.id).then(data => {
+        setComments(data);
+      }).finally(() => {
+        setLoadingComments(false);
+      });
+    }
+  }, [post?.id, accessToken]);
+
+  const handleLikeAll = async () => {
+    if (comments.length === 0) return;
+    
+    setLikingStatus({ active: true, current: 0, total: comments.length });
+    let successCount = 0;
+    
+    for (let i = 0; i < comments.length; i++) {
+      const comment = comments[i];
+      try {
+        setLikingStatus(prev => ({ ...prev, current: i + 1 }));
+        await likeComment(accessToken, comment.id);
+        successCount++;
+        // Optional: wait a bit between requests to avoid rate limits
+        await new Promise(res => setTimeout(res, 300));
+      } catch (err) {
+        console.error('Failed to like comment', comment.id);
+      }
+    }
+    
+    setLikingStatus({ active: false, current: 0, total: 0 });
+    toast.success(`Successfully liked ${successCount} out of ${comments.length} comments!`);
+    
+    // Refresh comments to show updated state (if API reflects immediately)
+    if (post && accessToken) {
+      fetchPostComments(accessToken, post.id).then(setComments);
+    }
+  };
 
   if (!post) {
     return (
@@ -124,6 +169,45 @@ export default function PostDetail() {
             </div>
           </motion.div>
         </div>
+
+        {/* Comments Manager */}
+        <motion.div variants={item} style={{ marginTop: 40 }}>
+          <div className="brutal-panel" style={{ padding: 32, background: 'var(--palette-6)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+              <h3 style={{ fontSize: 20, fontWeight: 900, textTransform: 'uppercase', letterSpacing: 1, color: '#000' }}>Comments Manager</h3>
+              
+              <button 
+                className="btn btn-primary" 
+                onClick={handleLikeAll}
+                disabled={likingStatus.active || comments.length === 0}
+                style={{ background: '#000', color: '#fff', border: 'none', boxShadow: 'none' }}
+              >
+                {likingStatus.active ? `Liking... (${likingStatus.current}/${likingStatus.total})` : `Auto-Like All Comments (${comments.length})`}
+              </button>
+            </div>
+
+            {loadingComments ? (
+              <div style={{ color: '#000', fontWeight: 600 }}>Loading comments...</div>
+            ) : comments.length === 0 ? (
+              <div style={{ color: '#000', fontWeight: 600 }}>No comments found on this post.</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxHeight: 400, overflowY: 'auto', paddingRight: 8 }}>
+                {comments.map(comment => (
+                  <div key={comment.id} style={{ background: '#fff', border: '2px solid #000', padding: 16, borderRadius: 0, boxShadow: '2px 2px 0px #000' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                      <span style={{ fontWeight: 900, color: '#000' }}>@{comment.username}</span>
+                      <span style={{ fontSize: 12, color: '#666', fontWeight: 600 }}>{new Date(comment.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    <div style={{ color: '#000', fontWeight: 500 }}>{comment.text}</div>
+                    <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, color: '#666' }}>
+                      ❤️ {comment.like_count} likes
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
 
       </motion.div>
     </div>
