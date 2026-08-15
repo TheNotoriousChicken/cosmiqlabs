@@ -54,6 +54,7 @@ export const fetchPostComments = async (token, mediaId) => {
     const { data } = await api.get(`/${mediaId}/comments`, {
       params: {
         fields: 'id,text,username,timestamp,like_count',
+        limit: 100,
         access_token: token,
       },
     });
