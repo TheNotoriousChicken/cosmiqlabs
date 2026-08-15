@@ -37,7 +37,7 @@ export default async function handler(req, res) {
 
     // 4. Save to Supabase
     await upsertUser(profile, dbUserId);
-    await saveSnapshot(dbUserId, profile, insights);
+    await saveSnapshot(dbUserId, profile.followers_count, profile.media_count);
     await upsertPostsAndInsights(dbUserId, posts);
     await upsertDemographics(dbUserId, demographics);
 
