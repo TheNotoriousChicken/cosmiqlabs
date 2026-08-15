@@ -5,6 +5,30 @@ import { useInstagramData } from '../../hooks/useInstagramData';
 import { askDashboardAI, isGeminiConfigured } from '../../services/geminiApi';
 import toast from 'react-hot-toast';
 
+
+// Simple markdown -> HTML renderer
+function renderMarkdown(text) {
+  return text
+    // Headers
+    .replace(/^### (.+)$/gm, '<h4 style="margin:10px 0 4px;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;">$1</h4>')
+    .replace(/^## (.+)$/gm, '<h3 style="margin:12px 0 4px;font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;">$1</h3>')
+    .replace(/^# (.+)$/gm, '<h2 style="margin:12px 0 6px;font-size:15px;font-weight:900;text-transform:uppercase;">$1</h2>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // Italic
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    // Bullet points
+    .replace(/^\* (.+)$/gm, '<li style="margin:3px 0;padding-left:4px;">$1</li>')
+    .replace(/^- (.+)$/gm, '<li style="margin:3px 0;padding-left:4px;">$1</li>')
+    // Numbered lists
+    .replace(/^\d+\. (.+)$/gm, '<li style="margin:3px 0;padding-left:4px;">$1</li>')
+    // Wrap consecutive <li> in <ul>
+    .replace(/(<li.*<\/li>)/gs, '<ul style="margin:6px 0;padding-left:16px;list-style:disc;">$1</ul>')
+    // Line breaks
+    .replace(/\n\n/g, '<br/><br/>')
+    .replace(/\n/g, '<br/>');
+}
+
 export default function DashboardAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([{ role: 'ai', text: 'Hey! I am your AI Strategist. Ask me anything about your Instagram performance.' }]);
@@ -115,7 +139,11 @@ export default function DashboardAssistant() {
                     fontWeight: 500, fontSize: 14, lineHeight: 1.5,
                     boxShadow: '2px 2px 0px rgba(0,0,0,0.2)'
                   }}>
-                    {m.text}
+                    {m.role === 'ai' ? (
+                      <div dangerouslySetInnerHTML={{ __html: renderMarkdown(m.text) }} />
+                    ) : (
+                      m.text
+                    )}
                   </div>
                 </div>
               ))}
