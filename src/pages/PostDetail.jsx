@@ -26,8 +26,11 @@ export default function PostDetail() {
   const post = filteredPosts.find(p => p.id === id);
 
   const [comments, setComments] = useState([]);
+  const [likedCommentIds, setLikedCommentIds] = useState(new Set());
   const [loadingComments, setLoadingComments] = useState(false);
   const [likingStatus, setLikingStatus] = useState({ active: false, current: 0, total: 0 });
+
+  const displayedComments = comments.filter(c => !likedCommentIds.has(c.id));
 
   useEffect(() => {
     if (post && accessToken) {
@@ -40,18 +43,30 @@ export default function PostDetail() {
     }
   }, [post?.id, accessToken]);
 
+  const handleLikeSingle = async (commentId) => {
+    try {
+      await likeComment(accessToken, commentId);
+      setLikedCommentIds(prev => new Set([...prev, commentId]));
+      toast.success('Comment liked!');
+    } catch (err) {
+      console.error('Failed to like comment:', err);
+      toast.error('Failed to like comment');
+    }
+  };
+
   const handleLikeAll = async () => {
-    if (comments.length === 0) return;
+    if (displayedComments.length === 0) return;
     
-    setLikingStatus({ active: true, current: 0, total: comments.length });
+    setLikingStatus({ active: true, current: 0, total: displayedComments.length });
     let successCount = 0;
     
-    for (let i = 0; i < comments.length; i++) {
-      const comment = comments[i];
+    for (let i = 0; i < displayedComments.length; i++) {
+      const comment = displayedComments[i];
       try {
         setLikingStatus(prev => ({ ...prev, current: i + 1 }));
         await likeComment(accessToken, comment.id);
         successCount++;
+        setLikedCommentIds(prev => new Set([...prev, comment.id]));
         // Optional: wait a bit between requests to avoid rate limits
         await new Promise(res => setTimeout(res, 300));
       } catch (err) {
@@ -60,12 +75,7 @@ export default function PostDetail() {
     }
     
     setLikingStatus({ active: false, current: 0, total: 0 });
-    toast.success(`Successfully liked ${successCount} out of ${comments.length} comments!`);
-    
-    // Refresh comments to show updated state (if API reflects immediately)
-    if (post && accessToken) {
-      fetchPostComments(accessToken, post.id).then(setComments);
-    }
+    toast.success(`Successfully liked ${successCount} comments!`);
   };
 
   if (!post) {
@@ -179,10 +189,10 @@ export default function PostDetail() {
               <button 
                 className="btn btn-primary" 
                 onClick={handleLikeAll}
-                disabled={likingStatus.active || comments.length === 0}
+                disabled={likingStatus.active || displayedComments.length === 0}
                 style={{ background: '#000', color: '#fff', border: 'none', boxShadow: 'none' }}
               >
-                {likingStatus.active ? `Liking... (${likingStatus.current}/${likingStatus.total})` : `Auto-Like All Comments (${comments.length})`}
+                {likingStatus.active ? `Liking... (${likingStatus.current}/${likingStatus.total})` : `Auto-Like All Comments (${displayedComments.length})`}
               </button>
             </div>
 
@@ -190,18 +200,36 @@ export default function PostDetail() {
               <div style={{ color: '#000', fontWeight: 600 }}>Loading comments...</div>
             ) : comments.length === 0 ? (
               <div style={{ color: '#000', fontWeight: 600 }}>No comments found on this post.</div>
+            ) : displayedComments.length === 0 ? (
+              <div style={{ color: '#000', fontWeight: 600 }}>You've liked all the top comments!</div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxHeight: 400, overflowY: 'auto', paddingRight: 8 }}>
-                {comments.map(comment => (
-                  <div key={comment.id} style={{ background: '#fff', border: '2px solid #000', padding: 16, borderRadius: 0, boxShadow: '2px 2px 0px #000' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                      <span style={{ fontWeight: 900, color: '#000' }}>@{comment.username}</span>
-                      <span style={{ fontSize: 12, color: '#666', fontWeight: 600 }}>{new Date(comment.timestamp).toLocaleDateString()}</span>
+                {displayedComments.map(comment => (
+                  <div key={comment.id} style={{ background: '#fff', border: '2px solid #000', padding: 16, borderRadius: 0, boxShadow: '2px 2px 0px #000', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, paddingRight: 16 }}>
+                        <span style={{ fontWeight: 900, color: '#000' }}>@{comment.username}</span>
+                        <span style={{ fontSize: 12, color: '#666', fontWeight: 600 }}>{new Date(comment.timestamp).toLocaleDateString()}</span>
+                      </div>
+                      <div style={{ color: '#000', fontWeight: 500 }}>{comment.text}</div>
+                      <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, color: '#666' }}>
+                        ❤️ {comment.like_count} likes
+                      </div>
                     </div>
-                    <div style={{ color: '#000', fontWeight: 500 }}>{comment.text}</div>
-                    <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, color: '#666' }}>
-                      ❤️ {comment.like_count} likes
-                    </div>
+                    <button 
+                      onClick={() => handleLikeSingle(comment.id)}
+                      disabled={likingStatus.active}
+                      style={{ 
+                        background: 'transparent', border: '2px solid #000', borderRadius: 4, 
+                        padding: '6px 12px', cursor: 'pointer', fontWeight: 900, fontSize: 12,
+                        boxShadow: '2px 2px 0px #000', transition: 'transform 0.1s'
+                      }}
+                      onMouseDown={e => { e.currentTarget.style.transform = 'translate(2px, 2px)'; e.currentTarget.style.boxShadow = 'none'; }}
+                      onMouseUp={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '2px 2px 0px #000'; }}
+                      onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '2px 2px 0px #000'; }}
+                    >
+                      Like
+                    </button>
                   </div>
                 ))}
               </div>
