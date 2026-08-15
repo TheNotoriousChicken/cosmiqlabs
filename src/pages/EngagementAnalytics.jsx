@@ -146,10 +146,18 @@ export default function EngagementAnalytics() {
 
         {/* Heatmap */}
         <motion.div variants={item} className="full-width-card brutal-panel chart-card">
-          <div className="chart-header">
-            <div>
-              <div className="chart-title">Interaction Heatmap</div>
-              <div className="chart-subtitle">When your audience engages most</div>
+          {/* Neo-Brutalism header bar */}
+          <div style={{
+            background: '#000', color: '#fff',
+            padding: '12px 24px',
+            margin: '-40px -40px 32px -40px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          }}>
+            <div style={{ fontWeight: 900, fontSize: 18, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+              ◼ Interaction Heatmap
+            </div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', fontFamily: 'var(--font-mono)' }}>
+              {onlineData?.length > 0 ? 'SOURCE: ONLINE FOLLOWERS API' : 'SOURCE: POST ENGAGEMENT DATA'}
             </div>
           </div>
 
@@ -160,116 +168,169 @@ export default function EngagementAnalytics() {
               <div className="empty-state-text">Sync more content to generate heatmap.</div>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto', marginTop: 24 }}>
-              <div style={{ minWidth: 680 }}>
+            <div style={{ overflowX: 'auto' }}>
+              <div style={{ minWidth: 720 }}>
 
-                {/* Hour labels — every 3 hours, aligned to cells */}
-                <div style={{ display: 'flex', marginLeft: 52, marginBottom: 8 }}>
+                {/* Hour axis labels */}
+                <div style={{ display: 'flex', marginLeft: 56, marginBottom: 6 }}>
                   {HOURS.map(h => (
                     <div key={h} style={{
                       flex: 1,
-                      fontSize: 11,
-                      fontWeight: 700,
-                      color: 'var(--text-muted)',
+                      fontSize: 10,
+                      fontWeight: 900,
+                      color: '#000',
                       textAlign: 'center',
+                      fontFamily: 'var(--font-mono)',
                       visibility: h % 3 === 0 ? 'visible' : 'hidden',
                     }}>
-                      {h === 0 ? '12a' : h < 12 ? `${h}a` : h === 12 ? '12p' : `${h - 12}p`}
+                      {h === 0 ? '12A' : h < 12 ? `${h}A` : h === 12 ? '12P' : `${h-12}P`}
                     </div>
                   ))}
                 </div>
 
-                {/* Rows */}
-                {DAYS.map((day) => (
-                  <div key={day} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
-                    <div style={{ width: 44, fontSize: 13, color: 'var(--text-secondary)', fontWeight: 800, flexShrink: 0 }}>
-                      {day}
-                    </div>
-                    <div style={{ display: 'flex', flex: 1, gap: 3 }}>
-                      {HOURS.map(h => {
-                        const val = heatmap[day][h];
-                        let intensity = 0;
-                        if (val > 0 && maxHeatVal > 0) {
-                          intensity = maxHeatVal > minHeatVal
-                            ? (val - minHeatVal) / (maxHeatVal - minHeatVal)
-                            : 0.5;
-                        }
+                {/* Grid rows */}
+                {DAYS.map((day, dayIdx) => {
+                  // Each day gets one palette color for its hot cells
+                  const PALETTE = [
+                    '#FFDF00', // Yellow
+                    '#FF90E8', // Pink
+                    '#8CFF98', // Green
+                    '#00E5FF', // Cyan
+                    '#FF914D', // Orange
+                    '#D4B2FF', // Lavender
+                    '#FF4444', // Red
+                  ];
+                  const dayColor = PALETTE[dayIdx % PALETTE.length];
 
-                        // Color: cold = green, warm = yellow, hot = red/pink
-                        const getColor = (t) => {
-                          if (t <= 0) return null;
-                          if (t < 0.33) return `rgba(92, 219, 149, ${0.3 + t * 2})`;
-                          if (t < 0.66) return `rgba(255, 200, 40, ${0.4 + t})`;
-                          return `rgba(255, 60, 100, ${0.5 + t * 0.5})`;
-                        };
+                  return (
+                    <div key={day} style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
+                      {/* Day label */}
+                      <div style={{
+                        width: 48, flexShrink: 0,
+                        fontSize: 12, fontWeight: 900,
+                        fontFamily: 'var(--font-mono)',
+                        color: '#000',
+                        textTransform: 'uppercase',
+                        letterSpacing: 1,
+                      }}>
+                        {day}
+                      </div>
 
-                        const bg = getColor(intensity);
-                        const label = `${day} ${h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h - 12}pm`} — ${val.toLocaleString()} ${onlineData?.length > 0 ? 'online' : 'engagements'}`;
+                      {/* Hour cells */}
+                      <div style={{ display: 'flex', flex: 1, gap: 2 }}>
+                        {HOURS.map(h => {
+                          const val = heatmap[day][h];
+                          let intensity = 0;
+                          if (val > 0 && maxHeatVal > 0) {
+                            intensity = maxHeatVal > minHeatVal
+                              ? (val - minHeatVal) / (maxHeatVal - minHeatVal)
+                              : 0.5;
+                          }
 
-                        return (
-                          <div key={h} style={{ position: 'relative', flex: 1 }}>
-                            <div
-                              style={{
-                                height: 32,
-                                borderRadius: 4,
-                                background: bg || 'var(--bg-elevated)',
-                                border: intensity > 0 ? '1.5px solid rgba(0,0,0,0.25)' : '1px solid var(--border-default)',
-                                boxShadow: intensity > 0.66 ? '0 2px 8px rgba(255,60,100,0.4)' : intensity > 0.33 ? '0 2px 6px rgba(255,200,40,0.3)' : 'none',
-                                transition: 'transform 0.15s',
-                                cursor: intensity > 0 ? 'pointer' : 'default',
-                              }}
-                              onMouseEnter={e => {
-                                if (intensity > 0) {
-                                  e.currentTarget.style.transform = 'scaleY(1.3)';
-                                  e.currentTarget.nextSibling.style.display = 'block';
-                                }
-                              }}
-                              onMouseLeave={e => {
-                                e.currentTarget.style.transform = 'scaleY(1)';
-                                e.currentTarget.nextSibling.style.display = 'none';
-                              }}
-                            />
-                            <div style={{
-                              display: 'none',
-                              position: 'absolute',
-                              bottom: 'calc(100% + 8px)',
-                              left: '50%',
-                              transform: 'translateX(-50%)',
-                              background: 'var(--text-primary)',
-                              color: 'var(--bg-base)',
-                              fontSize: 11,
-                              fontWeight: 700,
-                              padding: '5px 8px',
-                              borderRadius: 6,
-                              whiteSpace: 'nowrap',
-                              zIndex: 100,
-                              pointerEvents: 'none',
-                              border: '1.5px solid rgba(0,0,0,0.3)',
-                            }}>
-                              {label}
+                          // Neo-Brutalism: 3 discrete tiers, not a gradient
+                          // Empty → low (30% opacity) → mid (70%) → hot (100% + shadow)
+                          let bg = '#F4F4F0';
+                          let border = '2px solid #ccc';
+                          let shadow = 'none';
+                          let cellH = 34;
+
+                          if (intensity > 0.66) {
+                            bg = dayColor;
+                            border = '2px solid #000';
+                            shadow = '3px 3px 0px #000';
+                            cellH = 38;
+                          } else if (intensity > 0.33) {
+                            bg = dayColor;
+                            border = '2px solid #000';
+                            shadow = '2px 2px 0px #000';
+                            cellH = 34;
+                            // Mid = 60% opacity via hex
+                          } else if (intensity > 0) {
+                            bg = dayColor + '55'; // low opacity via hex
+                            border = '2px solid #000';
+                            shadow = 'none';
+                            cellH = 34;
+                          }
+
+                          const label = `${day} ${h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`}  ·  ${val.toLocaleString()} ${onlineData?.length > 0 ? 'online' : 'engagements'}`;
+
+                          return (
+                            <div key={h} style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <div
+                                style={{
+                                  width: '100%',
+                                  height: cellH,
+                                  borderRadius: 0,
+                                  background: bg,
+                                  border,
+                                  boxShadow: shadow,
+                                  transition: 'transform 0.1s, box-shadow 0.1s',
+                                  cursor: intensity > 0 ? 'crosshair' : 'default',
+                                }}
+                                onMouseEnter={e => {
+                                  if (intensity > 0) {
+                                    e.currentTarget.style.transform = 'translate(-2px, -2px)';
+                                    e.currentTarget.style.boxShadow = '5px 5px 0px #000';
+                                    e.currentTarget.nextSibling.style.display = 'block';
+                                  }
+                                }}
+                                onMouseLeave={e => {
+                                  e.currentTarget.style.transform = 'translate(0,0)';
+                                  e.currentTarget.style.boxShadow = shadow;
+                                  e.currentTarget.nextSibling.style.display = 'none';
+                                }}
+                              />
+                              {/* Tooltip */}
+                              <div style={{
+                                display: 'none',
+                                position: 'absolute',
+                                bottom: 'calc(100% + 6px)',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                background: '#000',
+                                color: dayColor === '#000000' ? '#fff' : dayColor,
+                                fontSize: 11,
+                                fontWeight: 900,
+                                padding: '6px 10px',
+                                border: '2px solid #000',
+                                boxShadow: '3px 3px 0px ' + dayColor,
+                                whiteSpace: 'nowrap',
+                                zIndex: 200,
+                                pointerEvents: 'none',
+                                fontFamily: 'var(--font-mono)',
+                              }}>
+                                {label}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
                 {/* Legend */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16, marginLeft: 52 }}>
-                  <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700 }}>LOW</span>
-                  {[0.05, 0.2, 0.4, 0.6, 0.8, 1.0].map((t, i) => (
-                    <div key={i} style={{
-                      width: 24, height: 14, borderRadius: 3,
-                      background: t < 0.33
-                        ? `rgba(92, 219, 149, ${0.3 + t * 2})`
-                        : t < 0.66
-                          ? `rgba(255, 200, 40, ${0.4 + t})`
-                          : `rgba(255, 60, 100, ${0.5 + t * 0.5})`,
-                      border: '1px solid rgba(0,0,0,0.2)',
-                    }} />
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 12,
+                  marginTop: 24, marginLeft: 56,
+                  padding: '10px 16px',
+                  border: '2px solid #000',
+                  boxShadow: '3px 3px 0px #000',
+                  background: '#F4F4F0',
+                  width: 'fit-content',
+                }}>
+                  <span style={{ fontSize: 10, fontWeight: 900, fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>Intensity:</span>
+                  {[
+                    { label: 'NONE', bg: '#F4F4F0', border: '2px solid #ccc', shadow: 'none' },
+                    { label: 'LOW', bg: '#FFDF0055', border: '2px solid #000', shadow: 'none' },
+                    { label: 'MID', bg: '#FFDF00', border: '2px solid #000', shadow: '2px 2px 0 #000' },
+                    { label: 'HOT', bg: '#FF914D', border: '2px solid #000', shadow: '3px 3px 0 #000' },
+                  ].map(({ label, bg, border, shadow }) => (
+                    <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <div style={{ width: 20, height: 20, background: bg, border, boxShadow: shadow, borderRadius: 0 }} />
+                      <span style={{ fontSize: 10, fontWeight: 900, fontFamily: 'var(--font-mono)' }}>{label}</span>
+                    </div>
                   ))}
-                  <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700 }}>HIGH</span>
                 </div>
 
               </div>
