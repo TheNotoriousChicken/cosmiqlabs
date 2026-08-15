@@ -51,14 +51,31 @@ export const fetchPostInsights = async (token, mediaId, mediaType) => {
 // ─── Comments ─────────────────────────────────────────────────────────────────
 export const fetchPostComments = async (token, mediaId) => {
   try {
-    const { data } = await api.get(`/${mediaId}/comments`, {
-      params: {
-        fields: 'id,text,username,timestamp,like_count',
-        limit: 100,
-        access_token: token,
-      },
-    });
-    return data.data || [];
+    let allComments = [];
+    let afterCursor = null;
+    let hasNextPage = true;
+
+    while (hasNextPage) {
+      const { data } = await api.get(`/${mediaId}/comments`, {
+        params: {
+          fields: 'id,text,username,timestamp,like_count',
+          limit: 100,
+          access_token: token,
+          after: afterCursor || undefined,
+        },
+      });
+      
+      if (data.data) {
+        allComments = [...allComments, ...data.data];
+      }
+      
+      if (data.paging && data.paging.cursors && data.paging.next) {
+        afterCursor = data.paging.cursors.after;
+      } else {
+        hasNextPage = false;
+      }
+    }
+    return allComments;
   } catch (err) {
     console.error('Error fetching comments:', err?.response?.data || err.message);
     return [];
