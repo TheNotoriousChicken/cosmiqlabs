@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import TopBar from '../components/Layout/TopBar';
 import { fetchPostComments, likeComment } from '../services/instagramApi';
+import { analyzePostVibe, isGeminiConfigured } from '../services/geminiApi';
 import toast from 'react-hot-toast';
 
 const container = {
@@ -36,6 +37,8 @@ export default function PostDetail() {
   });
   const [loadingComments, setLoadingComments] = useState(false);
   const [likingStatus, setLikingStatus] = useState({ active: false, current: 0, total: 0 });
+  const [vibe, setVibe] = useState('');
+  const [loadingVibe, setLoadingVibe] = useState(false);
 
   const hideComment = (commentId) => {
     setComments(prev => prev.filter(c => c.id !== commentId));
@@ -93,6 +96,17 @@ export default function PostDetail() {
     
     setLikingStatus({ active: false, current: 0, total: 0 });
     toast.success(`Successfully liked ${successCount} comments!`);
+  };
+
+  const handleVibeCheck = async () => {
+    if (!isGeminiConfigured()) {
+      toast.error('Gemini API is not configured.');
+      return;
+    }
+    setLoadingVibe(true);
+    const result = await analyzePostVibe(comments);
+    setVibe(result);
+    setLoadingVibe(false);
   };
 
   if (!post) {
@@ -203,14 +217,24 @@ export default function PostDetail() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
               <h3 style={{ fontSize: 20, fontWeight: 900, textTransform: 'uppercase', letterSpacing: 1, color: '#000' }}>Comments Manager</h3>
               
-              <button 
-                className="btn btn-primary" 
-                onClick={handleLikeAll}
-                disabled={likingStatus.active || comments.length === 0}
-                style={{ background: '#000', color: '#fff', border: 'none', boxShadow: 'none' }}
-              >
-                {likingStatus.active ? `Liking... (${likingStatus.current}/${likingStatus.total})` : `Auto-Like All Comments (${comments.length})`}
-              </button>
+              <div style={{ display: 'flex', gap: 16 }}>
+                <button 
+                  className="btn btn-secondary" 
+                  onClick={handleVibeCheck}
+                  disabled={loadingVibe || comments.length === 0}
+                  style={{ background: 'var(--palette-1)', color: '#000', border: '3px solid #000', boxShadow: '4px 4px 0px #000', fontWeight: 900 }}
+                >
+                  {loadingVibe ? 'Analyzing...' : vibe ? `Vibe: ${vibe}` : '✨ Vibe Check'}
+                </button>
+                <button 
+                  className="btn btn-primary" 
+                  onClick={handleLikeAll}
+                  disabled={likingStatus.active || comments.length === 0}
+                  style={{ background: '#000', color: '#fff', border: 'none', boxShadow: 'none' }}
+                >
+                  {likingStatus.active ? `Liking... (${likingStatus.current}/${likingStatus.total})` : `Auto-Like All Comments (${comments.length})`}
+                </button>
+              </div>
             </div>
 
             {loadingComments ? (

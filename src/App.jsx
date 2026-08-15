@@ -12,6 +12,7 @@ import PostDetail from './pages/PostDetail';
 import { useEffect } from 'react';
 import { useAppStore } from './store/useAppStore';
 import { useInstagramData } from './hooks/useInstagramData';
+import DashboardAssistant from './components/AI/DashboardAssistant';
 
 import { getUserByIgId } from './lib/db';
 
@@ -80,6 +81,7 @@ export default function App() {
         </main>
         <MobileNav />
       </div>
+      <DashboardAssistant />
       <Toaster
         position="bottom-right"
         toastOptions={{
