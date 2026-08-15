@@ -146,18 +146,12 @@ export default function EngagementAnalytics() {
 
         {/* Heatmap */}
         <motion.div variants={item} className="full-width-card brutal-panel chart-card">
-          {/* Neo-Brutalism header bar */}
-          <div style={{
-            background: '#000', color: '#fff',
-            padding: '12px 24px',
-            margin: '-40px -40px 32px -40px',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          }}>
-            <div style={{ fontWeight: 900, fontSize: 18, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
-              ◼ Interaction Heatmap
-            </div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#aaa', fontFamily: 'var(--font-mono)' }}>
-              {onlineData?.length > 0 ? 'SOURCE: ONLINE FOLLOWERS API' : 'SOURCE: POST ENGAGEMENT DATA'}
+          <div className="chart-header">
+            <div>
+              <div className="chart-title">Interaction Heatmap</div>
+              <div className="chart-subtitle">
+                When your audience engages most ({onlineData?.length > 0 ? 'Online Followers' : 'Post Engagement'})
+              </div>
             </div>
           </div>
 
@@ -176,14 +170,13 @@ export default function EngagementAnalytics() {
                   {HOURS.map(h => (
                     <div key={h} style={{
                       flex: 1,
-                      fontSize: 10,
-                      fontWeight: 900,
-                      color: '#000',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: 'var(--text-muted)',
                       textAlign: 'center',
-                      fontFamily: 'var(--font-mono)',
                       visibility: h % 3 === 0 ? 'visible' : 'hidden',
                     }}>
-                      {h === 0 ? '12A' : h < 12 ? `${h}A` : h === 12 ? '12P' : `${h-12}P`}
+                      {h === 0 ? '12a' : h < 12 ? `${h}a` : h === 12 ? '12p' : `${h-12}p`}
                     </div>
                   ))}
                 </div>
@@ -207,11 +200,8 @@ export default function EngagementAnalytics() {
                       {/* Day label */}
                       <div style={{
                         width: 48, flexShrink: 0,
-                        fontSize: 12, fontWeight: 900,
-                        fontFamily: 'var(--font-mono)',
-                        color: '#000',
-                        textTransform: 'uppercase',
-                        letterSpacing: 1,
+                        fontSize: 13, fontWeight: 700,
+                        color: 'var(--text-secondary)',
                       }}>
                         {day}
                       </div>
@@ -319,16 +309,16 @@ export default function EngagementAnalytics() {
                   background: '#F4F4F0',
                   width: 'fit-content',
                 }}>
-                  <span style={{ fontSize: 10, fontWeight: 900, fontFamily: 'var(--font-mono)', textTransform: 'uppercase' }}>Intensity:</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)' }}>Intensity:</span>
                   {[
-                    { label: 'NONE', bg: '#F4F4F0', border: '2px solid #ccc', shadow: 'none' },
-                    { label: 'LOW', bg: '#FFDF0055', border: '2px solid #000', shadow: 'none' },
-                    { label: 'MID', bg: '#FFDF00', border: '2px solid #000', shadow: '2px 2px 0 #000' },
-                    { label: 'HOT', bg: '#FF914D', border: '2px solid #000', shadow: '3px 3px 0 #000' },
+                    { label: 'None', bg: '#F4F4F0', border: '2px solid #ccc', shadow: 'none' },
+                    { label: 'Low', bg: '#FFDF0055', border: '2px solid #000', shadow: 'none' },
+                    { label: 'Mid', bg: '#FFDF00', border: '2px solid #000', shadow: '2px 2px 0 #000' },
+                    { label: 'Hot', bg: '#FF914D', border: '2px solid #000', shadow: '3px 3px 0 #000' },
                   ].map(({ label, bg, border, shadow }) => (
                     <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <div style={{ width: 20, height: 20, background: bg, border, boxShadow: shadow, borderRadius: 0 }} />
-                      <span style={{ fontSize: 10, fontWeight: 900, fontFamily: 'var(--font-mono)' }}>{label}</span>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)' }}>{label}</span>
                     </div>
                   ))}
                 </div>
