@@ -183,7 +183,7 @@ export default function EngagementAnalytics() {
 
                 {/* Grid rows */}
                 {DAYS.map((day, dayIdx) => {
-                  // Each day gets one palette color for its hot cells
+                  // Each day gets one palette color for its hot cells (matching BestTimePredictor)
                   const PALETTE = [
                     '#FFDF00', // Yellow
                     '#FF90E8', // Pink
@@ -191,12 +191,11 @@ export default function EngagementAnalytics() {
                     '#00E5FF', // Cyan
                     '#FF914D', // Orange
                     '#D4B2FF', // Lavender
-                    '#FF4444', // Red
                   ];
                   const dayColor = PALETTE[dayIdx % PALETTE.length];
 
                   return (
-                    <div key={day} style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
+                    <div key={day} style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
                       {/* Day label */}
                       <div style={{
                         width: 48, flexShrink: 0,
@@ -207,7 +206,7 @@ export default function EngagementAnalytics() {
                       </div>
 
                       {/* Hour cells */}
-                      <div style={{ display: 'flex', flex: 1, gap: 2 }}>
+                      <div style={{ display: 'flex', flex: 1, gap: 6 }}>
                         {HOURS.map(h => {
                           const val = heatmap[day][h];
                           let intensity = 0;
@@ -250,7 +249,7 @@ export default function EngagementAnalytics() {
                                 style={{
                                   width: '100%',
                                   height: cellH,
-                                  borderRadius: 0,
+                                  borderRadius: 4,
                                   background: bg,
                                   border,
                                   boxShadow: shadow,
@@ -317,7 +316,7 @@ export default function EngagementAnalytics() {
                     { label: 'Hot', bg: '#FF914D', border: '2px solid #000', shadow: '3px 3px 0 #000' },
                   ].map(({ label, bg, border, shadow }) => (
                     <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <div style={{ width: 20, height: 20, background: bg, border, boxShadow: shadow, borderRadius: 0 }} />
+                      <div style={{ width: 20, height: 20, background: bg, border, boxShadow: shadow, borderRadius: 4 }} />
                       <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)' }}>{label}</span>
                     </div>
                   ))}
