@@ -160,57 +160,118 @@ export default function EngagementAnalytics() {
               <div className="empty-state-text">Sync more content to generate heatmap.</div>
             </div>
           ) : (
-            <div style={{ overflowX: 'auto', marginTop: 16 }}>
-              <div style={{ minWidth: 800 }}>
-                <div style={{ display: 'flex', marginLeft: 60, marginBottom: 12 }}>
-                  {[0, 3, 6, 9, 12, 15, 18, 21].map(h => (
-                    <div key={h} style={{ flex: 3, fontSize: 13, color: 'var(--text-secondary)', fontWeight: 700 }}>
+            <div style={{ overflowX: 'auto', marginTop: 24 }}>
+              <div style={{ minWidth: 680 }}>
+
+                {/* Hour labels — every 3 hours, aligned to cells */}
+                <div style={{ display: 'flex', marginLeft: 52, marginBottom: 8 }}>
+                  {HOURS.map(h => (
+                    <div key={h} style={{
+                      flex: 1,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: 'var(--text-muted)',
+                      textAlign: 'center',
+                      visibility: h % 3 === 0 ? 'visible' : 'hidden',
+                    }}>
                       {h === 0 ? '12a' : h < 12 ? `${h}a` : h === 12 ? '12p' : `${h - 12}p`}
                     </div>
                   ))}
                 </div>
 
-                {DAYS.map((day, dayIndex) => {
-                  const BRUTAL_COLORS = ['var(--palette-1)', 'var(--palette-2)', 'var(--palette-3)', 'var(--palette-4)', 'var(--palette-5)', 'var(--palette-6)'];
-                  return (
-                  <div key={day} style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-                    <div style={{ width: 60, fontSize: 14, color: 'var(--text-secondary)', fontWeight: 800, flexShrink: 0 }}>{day}</div>
-                    <div style={{ display: 'flex', flex: 1, gap: 8 }}>
+                {/* Rows */}
+                {DAYS.map((day) => (
+                  <div key={day} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
+                    <div style={{ width: 44, fontSize: 13, color: 'var(--text-secondary)', fontWeight: 800, flexShrink: 0 }}>
+                      {day}
+                    </div>
+                    <div style={{ display: 'flex', flex: 1, gap: 3 }}>
                       {HOURS.map(h => {
                         const val = heatmap[day][h];
                         let intensity = 0;
-                        if (val > 0) {
-                          if (maxHeatVal > minHeatVal) {
-                            intensity = 0.2 + ((val - minHeatVal) / (maxHeatVal - minHeatVal)) * 0.8;
-                          } else {
-                            intensity = 0.5;
-                          }
+                        if (val > 0 && maxHeatVal > 0) {
+                          intensity = maxHeatVal > minHeatVal
+                            ? (val - minHeatVal) / (maxHeatVal - minHeatVal)
+                            : 0.5;
                         }
+
+                        // Color: cold = green, warm = yellow, hot = red/pink
+                        const getColor = (t) => {
+                          if (t <= 0) return null;
+                          if (t < 0.33) return `rgba(92, 219, 149, ${0.3 + t * 2})`;
+                          if (t < 0.66) return `rgba(255, 200, 40, ${0.4 + t})`;
+                          return `rgba(255, 60, 100, ${0.5 + t * 0.5})`;
+                        };
+
+                        const bg = getColor(intensity);
+                        const label = `${day} ${h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h - 12}pm`} — ${val.toLocaleString()} ${onlineData?.length > 0 ? 'online' : 'engagements'}`;
+
                         return (
-                          <div
-                            key={h}
-                            title={`${day} ${h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`} — ${val} ${hasHeatmapData && onlineData?.length > 0 ? 'online followers' : 'engagements'}`}
-                            style={{
-                              flex: 1,
-                              height: 36,
-                              borderRadius: 4,
-                              background: intensity > 0
-                                ? BRUTAL_COLORS[dayIndex % BRUTAL_COLORS.length]
-                                : 'var(--bg-elevated)',
-                              opacity: intensity > 0 ? (0.3 + intensity * 0.7) : 1,
-                              border: intensity > 0 ? 'var(--brutal-border)' : '1px solid var(--border-default)',
-                              boxShadow: intensity > 0 ? '2px 2px 0px #000' : 'none',
-                              transition: 'all 0.2s',
-                              cursor: 'pointer'
-                            }}
-                            onMouseEnter={e => { if(intensity>0) { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.zIndex = 10; e.currentTarget.style.boxShadow = '0 8px 24px rgba(92, 107, 250, 0.4)'; } }}
-                            onMouseLeave={e => { if(intensity>0) { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.zIndex = 1; e.currentTarget.style.boxShadow = '0 4px 12px rgba(92, 107, 250, 0.2)'; } }}
-                          />
+                          <div key={h} style={{ position: 'relative', flex: 1 }}>
+                            <div
+                              style={{
+                                height: 32,
+                                borderRadius: 4,
+                                background: bg || 'var(--bg-elevated)',
+                                border: intensity > 0 ? '1.5px solid rgba(0,0,0,0.25)' : '1px solid var(--border-default)',
+                                boxShadow: intensity > 0.66 ? '0 2px 8px rgba(255,60,100,0.4)' : intensity > 0.33 ? '0 2px 6px rgba(255,200,40,0.3)' : 'none',
+                                transition: 'transform 0.15s',
+                                cursor: intensity > 0 ? 'pointer' : 'default',
+                              }}
+                              onMouseEnter={e => {
+                                if (intensity > 0) {
+                                  e.currentTarget.style.transform = 'scaleY(1.3)';
+                                  e.currentTarget.nextSibling.style.display = 'block';
+                                }
+                              }}
+                              onMouseLeave={e => {
+                                e.currentTarget.style.transform = 'scaleY(1)';
+                                e.currentTarget.nextSibling.style.display = 'none';
+                              }}
+                            />
+                            <div style={{
+                              display: 'none',
+                              position: 'absolute',
+                              bottom: 'calc(100% + 8px)',
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                              background: 'var(--text-primary)',
+                              color: 'var(--bg-base)',
+                              fontSize: 11,
+                              fontWeight: 700,
+                              padding: '5px 8px',
+                              borderRadius: 6,
+                              whiteSpace: 'nowrap',
+                              zIndex: 100,
+                              pointerEvents: 'none',
+                              border: '1.5px solid rgba(0,0,0,0.3)',
+                            }}>
+                              {label}
+                            </div>
+                          </div>
                         );
                       })}
                     </div>
                   </div>
-                )})}
+                ))}
+
+                {/* Legend */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16, marginLeft: 52 }}>
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700 }}>LOW</span>
+                  {[0.05, 0.2, 0.4, 0.6, 0.8, 1.0].map((t, i) => (
+                    <div key={i} style={{
+                      width: 24, height: 14, borderRadius: 3,
+                      background: t < 0.33
+                        ? `rgba(92, 219, 149, ${0.3 + t * 2})`
+                        : t < 0.66
+                          ? `rgba(255, 200, 40, ${0.4 + t})`
+                          : `rgba(255, 60, 100, ${0.5 + t * 0.5})`,
+                      border: '1px solid rgba(0,0,0,0.2)',
+                    }} />
+                  ))}
+                  <span style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700 }}>HIGH</span>
+                </div>
+
               </div>
             </div>
           )}
