@@ -26,14 +26,31 @@ export default function PostDetail() {
   const post = filteredPosts.find(p => p.id === id);
 
   const [comments, setComments] = useState([]);
+  const [persistedLikedIds, setPersistedLikedIds] = useState(() => {
+    try {
+      const stored = localStorage.getItem('insta_liked_comments');
+      return stored ? new Set(JSON.parse(stored)) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
   const [loadingComments, setLoadingComments] = useState(false);
   const [likingStatus, setLikingStatus] = useState({ active: false, current: 0, total: 0 });
+
+  const hideComment = (commentId) => {
+    setComments(prev => prev.filter(c => c.id !== commentId));
+    setPersistedLikedIds(prev => {
+      const newSet = new Set([...prev, commentId]);
+      localStorage.setItem('insta_liked_comments', JSON.stringify([...newSet]));
+      return newSet;
+    });
+  };
 
   useEffect(() => {
     if (post && accessToken) {
       setLoadingComments(true);
       fetchPostComments(accessToken, post.id).then(data => {
-        setComments(data);
+        setComments(data.filter(c => !persistedLikedIds.has(c.id)));
       }).finally(() => {
         setLoadingComments(false);
       });
@@ -43,7 +60,7 @@ export default function PostDetail() {
   const handleLikeSingle = async (commentId) => {
     try {
       await likeComment(accessToken, commentId);
-      setComments(prev => prev.filter(c => c.id !== commentId));
+      hideComment(commentId);
       toast.success('Comment liked!');
     } catch (err) {
       console.error('Failed to like comment:', err);
@@ -66,7 +83,7 @@ export default function PostDetail() {
         setLikingStatus(prev => ({ ...prev, current: i + 1 }));
         await likeComment(accessToken, comment.id);
         successCount++;
-        setComments(prev => prev.filter(c => c.id !== comment.id));
+        hideComment(comment.id);
         // Optional: wait a bit between requests to avoid rate limits
         await new Promise(res => setTimeout(res, 300));
       } catch (err) {
