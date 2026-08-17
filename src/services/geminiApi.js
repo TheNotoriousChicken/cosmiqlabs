@@ -104,7 +104,9 @@ STRUCTURE (strict 3-part brutalist format):
 1. THE HOOK (Retention Trigger)
    - Drop an existential question or unresolved fact tied to the topic.
    - Must NOT repeat the caption.
-   - Bonus: imply the answer is HIDDEN somewhere in the video itself ("rewatch the last 3 seconds," "you missed it if you blinked," "the answer's in frame 2") — this pulls people back into the video instead of just scrolling to comments.
+   - Use VAGUE rewatch triggers that cannot be fact-checked — NEVER reference specific timestamps, frames, seconds, or visual details ("at 0:03," "top right corner," "frame 2") — these get caught as fake.
+   - Instead use: "watch it again knowing that—", "your eyes glossed over the part that matters," "you weren't looking for it, so you missed it," "go back in — slower this time."
+   - The mystery lives in the FACT or QUESTION, not in a fake video detail.
 
 2. THE CTA (Instant-Follow, not soft-follow)
    - Frame following as the ONLY way to not miss what's coming — urgency + scarcity, not politeness.
