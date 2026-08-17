@@ -85,28 +85,47 @@ Comments: ${sample}
   }
 };
 /**
- * Generates 5 natural, non-cringy comment options for a new reel.
- * Designed to sound like a genuine viewer, not a branded bot.
+ * Generates 5 high-conversion pinned comment options for a new reel.
+ * Uses an engineered brutalist growth-hacker prompt for @cosmiq.labs.
  */
 export const generateReelComments = async (caption, handle) => {
   if (!model) throw new Error("Gemini API not configured.");
 
   const prompt = `
-You are helping an Instagram creator craft a pinned comment on their own reel to boost engagement.
+Act as a high-conversion growth hacker for ${handle} (niche: mind-bending space, astrophysics, cosmic scale).
 
-The comment must:
-- Sound like it was written by a genuine, thoughtful viewer — NOT by the page owner promoting themselves
-- Be subtle and natural. Never sound like a marketing copy or a CTA bot.
-- Avoid hype words like "insane", "go viral", "🔥", "bro", "mind-blowing", "literally"
-- NO direct "follow me" commands. Influence indirectly through curiosity or relatability.
-- Be 1-2 sentences max. Lowercase is fine and often more authentic.
-- Use at most one emoji, or none at all.
-- Each comment should take a different angle: curiosity, perspective shift, a stat or fact callback, an existential question, or a quiet relatable reaction.
+Write a pinned comment for a new Reel with this caption:
+"${caption?.substring(0, 400) || 'A mind-bending cosmic science reel'}"
 
-The creator's account handle is: ${handle}
-The reel caption is: "${caption?.substring(0, 300) || 'A cosmic science reel'}"
+GOAL: Maximize watch-time (rewatch behavior) + trigger an IMMEDIATE follow (not "maybe later").
 
-Return EXACTLY 5 comment options as a JSON array of strings. No extra text, no explanation, just the raw JSON array.
+STRUCTURE (strict 3-part brutalist format):
+
+1. THE HOOK (Retention Trigger)
+   - Drop an existential question or unresolved fact tied to the topic.
+   - Must NOT repeat the caption.
+   - Bonus: imply the answer is HIDDEN somewhere in the video itself ("rewatch the last 3 seconds," "you missed it if you blinked," "the answer's in frame 2") — this pulls people back into the video instead of just scrolling to comments.
+
+2. THE CTA (Instant-Follow, not soft-follow)
+   - Frame following as the ONLY way to not miss what's coming — urgency + scarcity, not politeness.
+   - Use command verbs: "Follow before—", "Don't scroll past—", "Last chance to—"
+   - Imply a countdown/series logic: "Part 2 drops before you're ready for it."
+   - Avoid passive asks like "follow for more" — replace with consequence-framed commands ("miss this and you're behind").
+
+3. THE VIBE
+   - Short. Cold. Authoritative — like a warning, not an invitation.
+   - Max 1 emoji, only from: 🌌 💀 👁️
+   - Zero enthusiasm punctuation (no "!!"). Periods or em-dashes only.
+   - No friendly tone, no explaining the joke.
+
+CONSTRAINTS:
+- Under 150 characters per variation
+- No repeated caption phrasing
+- No generic CTAs
+- Output 5 distinct variations, numbered
+
+Return EXACTLY 5 comment options as a JSON array of strings. No extra text, no numbering, no explanation outside the array.
+Each string is the full comment (Hook + CTA merged naturally, under 150 chars).
 Example format: ["comment 1", "comment 2", "comment 3", "comment 4", "comment 5"]
   `;
 
