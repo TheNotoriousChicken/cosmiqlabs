@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useInstagramData } from '../hooks/useInstagramData';
-import { ExternalLink, X, ArrowRight, Heart, MessageCircle, Image as ImageIcon, PlayCircle, Layers } from 'lucide-react';
+import { ExternalLink, X, ArrowRight, Heart, MessageCircle, Image as ImageIcon, PlayCircle, Layers, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CountUp from 'react-countup';
+import ReelCommentPicker from '../components/AI/ReelCommentPicker';
 
 const SORT_OPTIONS = [
   { value: 'likes', label: 'Most Likes' },
@@ -45,6 +46,7 @@ export default function TopContent() {
   const [sort, setSort] = useState('likes');
   const [filter, setFilter] = useState('ALL');
   const [activePost, setActivePost] = useState(null);
+  const [commentTarget, setCommentTarget] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const sortedPosts = filteredPosts
@@ -289,8 +291,15 @@ export default function TopContent() {
                   </div>
                 </div>
 
-                <div style={{ marginTop: 'auto', display: 'flex', gap: 16 }}>
-                  <button className="btn btn-primary w-full" onClick={() => navigate(`/post/${activePost.id}`)}>
+                <div style={{ marginTop: 'auto', display: 'flex', gap: 12 }}>
+                  <button
+                    className="btn"
+                    style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--palette-2)', border: '2px solid #000', boxShadow: '3px 3px 0 #000', fontWeight: 900, fontSize: 13 }}
+                    onClick={() => { setCommentTarget(activePost); setActivePost(null); }}
+                  >
+                    <Sparkles size={15} /> Gen Comment
+                  </button>
+                  <button className="btn btn-primary" style={{ flex: 2 }} onClick={() => navigate(`/post/${activePost.id}`)}>
                     View Detailed Report <ArrowRight size={16} />
                   </button>
                 </div>
@@ -299,6 +308,15 @@ export default function TopContent() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* AI Comment Picker — triggered manually from content page */}
+      {commentTarget && (
+        <ReelCommentPicker
+          reel={commentTarget}
+          onDismiss={() => setCommentTarget(null)}
+          onDone={() => setCommentTarget(null)}
+        />
+      )}
     </div>
   );
 }
