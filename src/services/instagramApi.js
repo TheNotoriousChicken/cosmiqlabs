@@ -97,6 +97,22 @@ export const likeComment = async (token, commentId) => {
   }
 };
 
+export const postComment = async (token, mediaId, message) => {
+  try {
+    const { data } = await api.post(`/${mediaId}/comments`, null, {
+      params: {
+        message,
+        access_token: token,
+      },
+    });
+    return data; // returns { id: 'comment_id' }
+  } catch (err) {
+    console.error('Error posting comment:', err?.response?.data || err.message);
+    throw err;
+  }
+};
+
+
 
 // ─── Account Insights ─────────────────────────────────────────────────────────
 export const fetchAccountInsights = async (token, period = 'day', since, until) => {

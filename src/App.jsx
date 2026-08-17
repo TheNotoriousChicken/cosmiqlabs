@@ -13,6 +13,8 @@ import { useEffect } from 'react';
 import { useAppStore } from './store/useAppStore';
 import { useInstagramData } from './hooks/useInstagramData';
 import DashboardAssistant from './components/AI/DashboardAssistant';
+import ReelCommentPicker from './components/AI/ReelCommentPicker';
+import { useNewReelDetector } from './hooks/useNewReelDetector';
 
 import { getUserByIgId } from './lib/db';
 
@@ -21,6 +23,7 @@ import TopBar from './components/Layout/TopBar';
 
 export default function App() {
   const { setAccessToken, accessToken, loadCached, mode, setDbUserId } = useAppStore();
+  const { newReel, dismiss, markDone } = useNewReelDetector();
   const { refresh, loadFromDB } = useInstagramData();
 
   useEffect(() => {
@@ -82,6 +85,13 @@ export default function App() {
         <MobileNav />
       </div>
       <DashboardAssistant />
+      {newReel && (
+        <ReelCommentPicker
+          reel={newReel}
+          onDismiss={dismiss}
+          onDone={markDone}
+        />
+      )}
       <Toaster
         position="bottom-right"
         toastOptions={{

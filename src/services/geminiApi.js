@@ -84,3 +84,43 @@ Comments: ${sample}
     return "Unknown Vibe";
   }
 };
+/**
+ * Generates 5 natural, non-cringy comment options for a new reel.
+ * Designed to sound like a genuine viewer, not a branded bot.
+ */
+export const generateReelComments = async (caption, handle) => {
+  if (!model) throw new Error("Gemini API not configured.");
+
+  const prompt = `
+You are helping an Instagram creator craft a pinned comment on their own reel to boost engagement.
+
+The comment must:
+- Sound like it was written by a genuine, thoughtful viewer — NOT by the page owner promoting themselves
+- Be subtle and natural. Never sound like a marketing copy or a CTA bot.
+- Avoid hype words like "insane", "go viral", "🔥", "bro", "mind-blowing", "literally"
+- NO direct "follow me" commands. Influence indirectly through curiosity or relatability.
+- Be 1-2 sentences max. Lowercase is fine and often more authentic.
+- Use at most one emoji, or none at all.
+- Each comment should take a different angle: curiosity, perspective shift, a stat or fact callback, an existential question, or a quiet relatable reaction.
+
+The creator's account handle is: ${handle}
+The reel caption is: "${caption?.substring(0, 300) || 'A cosmic science reel'}"
+
+Return EXACTLY 5 comment options as a JSON array of strings. No extra text, no explanation, just the raw JSON array.
+Example format: ["comment 1", "comment 2", "comment 3", "comment 4", "comment 5"]
+  `;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const text = (await result.response).text().trim();
+    // Extract JSON array from the response
+    const match = text.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error("Invalid response format");
+    const comments = JSON.parse(match[0]);
+    if (!Array.isArray(comments) || comments.length === 0) throw new Error("Empty array");
+    return comments.slice(0, 5);
+  } catch (error) {
+    console.error("Reel Comment Generation Error:", error);
+    throw new Error("Failed to generate comment options.");
+  }
+};
