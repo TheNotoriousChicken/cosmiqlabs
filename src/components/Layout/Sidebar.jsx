@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard, Zap, Users, BarChart2, Settings, Camera, Globe
+  LayoutDashboard, Zap, Users, BarChart2, Settings, Camera, Globe, Sparkles
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { motion } from 'framer-motion';
@@ -11,6 +11,7 @@ const NAV = [
   { to: '/followers',  icon: Users,           label: 'Followers',   end: false },
   { to: '/demographics', icon: Globe,         label: 'Demographics',end: false },
   { to: '/engagement', icon: BarChart2,       label: 'Engagement',  end: false },
+  { to: '/caption',    icon: Sparkles,        label: 'AI Caption',  end: false },
 ];
 
 export default function Sidebar() {

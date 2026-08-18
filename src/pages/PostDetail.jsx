@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useInstagramData } from '../hooks/useInstagramData';
 import MetricCard from '../components/Cards/MetricCard';
-import { ArrowLeft, ExternalLink, MessageCircle, Heart, Bookmark, Share2, PlayCircle, Eye } from 'lucide-react';
+import { ArrowLeft, ExternalLink, MessageCircle, Heart, Bookmark, Share2, PlayCircle, Eye, Sparkles, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import TopBar from '../components/Layout/TopBar';
 import { fetchPostComments, likeComment } from '../services/instagramApi';
-import { analyzePostVibe, isGeminiConfigured } from '../services/geminiApi';
+import { analyzePostVibe, explainPostPerformance, isGeminiConfigured } from '../services/geminiApi';
 import toast from 'react-hot-toast';
 
 const container = {
@@ -39,6 +39,8 @@ export default function PostDetail() {
   const [likingStatus, setLikingStatus] = useState({ active: false, current: 0, total: 0 });
   const [vibe, setVibe] = useState('');
   const [loadingVibe, setLoadingVibe] = useState(false);
+  const [perfExplain, setPerfExplain] = useState('');
+  const [loadingPerf, setLoadingPerf] = useState(false);
 
   const hideComment = (commentId) => {
     setComments(prev => prev.filter(c => c.id !== commentId));
@@ -107,6 +109,23 @@ export default function PostDetail() {
     const result = await analyzePostVibe(comments);
     setVibe(result);
     setLoadingVibe(false);
+  };
+
+  const handlePerfExplain = async () => {
+    if (!isGeminiConfigured()) { toast.error('Gemini API is not configured.'); return; }
+    setLoadingPerf(true);
+    try {
+      const fc = profile?.followers_count || 1;
+      const avgLikes = filteredPosts.reduce((s, p) => s + (p.like_count || 0), 0) / (filteredPosts.length || 1);
+      const avgComments = filteredPosts.reduce((s, p) => s + (p.comments_count || 0), 0) / (filteredPosts.length || 1);
+      const avgViews = filteredPosts.reduce((s, p) => s + (p.insights?.views || 0), 0) / (filteredPosts.length || 1);
+      const result = await explainPostPerformance(post, { avgLikes: Math.round(avgLikes), avgComments: Math.round(avgComments), avgViews: Math.round(avgViews), followerCount: fc });
+      setPerfExplain(result);
+    } catch (e) {
+      toast.error('Performance analysis failed.');
+    } finally {
+      setLoadingPerf(false);
+    }
   };
 
   if (!post) {
@@ -210,6 +229,41 @@ export default function PostDetail() {
             </div>
           </motion.div>
         </div>
+
+        {/* AI Post Performance Explainer */}
+        <motion.div variants={item} style={{ marginTop: 40 }}>
+          <div className="brutal-panel" style={{ padding: 32 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: perfExplain ? 24 : 0 }}>
+              <div>
+                <h3 style={{ fontSize: 18, fontWeight: 900, textTransform: 'uppercase', letterSpacing: 1, color: '#000', margin: 0 }}>AI Performance Diagnosis</h3>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginTop: 4 }}>Why did this post perform the way it did?</div>
+              </div>
+              <button
+                onClick={handlePerfExplain}
+                disabled={loadingPerf}
+                style={{
+                  padding: '12px 20px', background: loadingPerf ? '#ccc' : 'var(--palette-2)',
+                  border: '3px solid #000', boxShadow: loadingPerf ? 'none' : '4px 4px 0 #000',
+                  fontWeight: 900, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1,
+                  cursor: loadingPerf ? 'not-allowed' : 'pointer',
+                  display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'inherit',
+                }}
+              >
+                {loadingPerf ? <><Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} /> Diagnosing...</> : <><Sparkles size={15} /> Diagnose Performance</>}
+              </button>
+            </div>
+            {!perfExplain && !loadingPerf && (
+              <div style={{ color: 'var(--text-secondary)', fontSize: 13, fontWeight: 600, padding: '6px 0' }}>
+                Get a data-grounded verdict on why this post over/underperformed vs your average.
+              </div>
+            )}
+            {perfExplain && (
+              <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.8, whiteSpace: 'pre-wrap', borderLeft: '4px solid var(--palette-2)', paddingLeft: 20 }}>
+                {perfExplain}
+              </div>
+            )}
+          </div>
+        </motion.div>
 
         {/* Comments Manager */}
         <motion.div variants={item} style={{ marginTop: 40 }}>

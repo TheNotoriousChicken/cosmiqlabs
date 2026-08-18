@@ -2,6 +2,9 @@ import { useInstagramData } from '../hooks/useInstagramData';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import TopBar from '../components/Layout/TopBar';
+import { useState } from 'react';
+import { Sparkles, Loader2 } from 'lucide-react';
+import { analyzeDemographics } from '../services/geminiApi';
 
 const container = {
   hidden: { opacity: 0 },
@@ -16,7 +19,21 @@ const item = {
 const BRUTAL_COLORS = ['var(--palette-1)', 'var(--palette-2)', 'var(--palette-3)', 'var(--palette-4)', 'var(--palette-5)', 'var(--palette-6)'];
 
 export default function Demographics() {
-  const { demographics, loading } = useInstagramData();
+  const { demographics, filteredPosts, profile, loading } = useInstagramData();
+  const [insights, setInsights] = useState(null);
+  const [loadingInsights, setLoadingInsights] = useState(false);
+
+  const handleAnalyze = async () => {
+    setLoadingInsights(true);
+    try {
+      const result = await analyzeDemographics(demographics, filteredPosts, profile?.username ? `@${profile.username}` : '@cosmiq.labs');
+      setInsights(result);
+    } catch (e) {
+      setInsights([]);
+    } finally {
+      setLoadingInsights(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -218,6 +235,54 @@ export default function Demographics() {
             </div>
           </motion.div>
         </div>
+
+        {/* AI Audience Insights */}
+        <motion.div variants={item} className="full-width-card brutal-panel" style={{ padding: '32px 40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: insights ? 24 : 0 }}>
+            <div>
+              <div className="chart-title">AI Audience Insights</div>
+              <div className="chart-subtitle">3 data-grounded actions from your demographic breakdown</div>
+            </div>
+            <button
+              onClick={handleAnalyze}
+              disabled={loadingInsights}
+              style={{
+                padding: '10px 20px', background: loadingInsights ? '#ccc' : 'var(--palette-2)',
+                border: '2px solid #000', boxShadow: loadingInsights ? 'none' : '3px 3px 0 #000',
+                fontWeight: 900, fontSize: 12, textTransform: 'uppercase',
+                cursor: loadingInsights ? 'not-allowed' : 'pointer',
+                display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'inherit',
+              }}
+            >
+              {loadingInsights
+                ? <><Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} /> Analyzing...</>
+                : <><Sparkles size={14} /> Analyze Audience</>}
+            </button>
+          </div>
+
+          {insights === null && !loadingInsights && (
+            <div style={{ color: 'var(--text-secondary)', fontSize: 13, fontWeight: 600, padding: '8px 0' }}>
+              Click Analyze Audience to get 3 sharp, data-backed content strategy insights.
+            </div>
+          )}
+
+          {insights !== null && !loadingInsights && (
+            insights.length === 0 ? (
+              <div style={{ color: 'var(--danger)', fontWeight: 700, fontSize: 14 }}>Could not generate insights — demographics data may be insufficient.</div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+                {insights.map((ins, i) => (
+                  <div key={i} style={{ padding: 20, border: '2px solid #000', boxShadow: '3px 3px 0 #000', background: i === 0 ? 'var(--palette-1)' : i === 1 ? 'var(--palette-2)' : 'var(--palette-3)' }}>
+                    <div style={{ fontWeight: 900, fontSize: 14, marginBottom: 8, lineHeight: 1.4 }}>{ins.insight}</div>
+                    <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.7, marginBottom: 10 }}>📊 {ins.data_point}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, borderTop: '2px solid rgba(0,0,0,0.2)', paddingTop: 10 }}>→ {ins.action}</div>
+                  </div>
+                ))}
+              </div>
+            )
+          )}
+        </motion.div>
+
       </motion.div>
     </div>
   );

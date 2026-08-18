@@ -8,6 +8,8 @@ import { fetchOnlineFollowers } from '../services/instagramApi';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
 import { useState, useEffect } from 'react';
+import { Sparkles, Loader2, Clock, Activity } from 'lucide-react';
+import { analyzeBestPostTime, analyzeEngagementDrop } from '../services/geminiApi';
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -26,6 +28,35 @@ export default function EngagementAnalytics() {
   const { filteredPosts, totals, profile, avgEngagementRate, loading } = useInstagramData();
   const { accessToken } = useAppStore();
   const [onlineData, setOnlineData] = useState(null);
+  const [bestTime, setBestTime] = useState(null);
+  const [loadingBestTime, setLoadingBestTime] = useState(false);
+  const [engDiagnosis, setEngDiagnosis] = useState(null);
+  const [loadingDiagnosis, setLoadingDiagnosis] = useState(false);
+
+  const handleBestTime = async () => {
+    if (!onlineData?.length) return;
+    setLoadingBestTime(true);
+    try {
+      const result = await analyzeBestPostTime(onlineData);
+      setBestTime(result);
+    } catch (e) {
+      setBestTime({ primary_window: 'Analysis failed', why: e.message, confidence: 'low', secondary_window: null, data_note: null });
+    } finally {
+      setLoadingBestTime(false);
+    }
+  };
+
+  const handleEngagementDiagnosis = async () => {
+    setLoadingDiagnosis(true);
+    try {
+      const result = await analyzeEngagementDrop(onlineData || [], filteredPosts, profile?.followers_count);
+      setEngDiagnosis(result);
+    } catch (e) {
+      setEngDiagnosis(null);
+    } finally {
+      setLoadingDiagnosis(false);
+    }
+  };
 
   useEffect(() => {
     if (accessToken) {
@@ -327,6 +358,112 @@ export default function EngagementAnalytics() {
             </div>
           )}
         </motion.div>
+
+        {/* AI Best Time to Post */}
+        <motion.div variants={item} className="full-width-card brutal-panel" style={{ padding: '32px 40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: bestTime ? 24 : 0 }}>
+            <div>
+              <div className="chart-title">AI Best Time to Post</div>
+              <div className="chart-subtitle">Analyzes your real follower activity heatmap — not generic benchmarks</div>
+            </div>
+            <button
+              onClick={handleBestTime}
+              disabled={loadingBestTime || !onlineData?.length}
+              style={{
+                padding: '10px 20px',
+                background: loadingBestTime || !onlineData?.length ? '#ccc' : 'var(--palette-2)',
+                border: '2px solid #000', boxShadow: loadingBestTime || !onlineData?.length ? 'none' : '3px 3px 0 #000',
+                fontWeight: 900, fontSize: 12, textTransform: 'uppercase',
+                cursor: loadingBestTime || !onlineData?.length ? 'not-allowed' : 'pointer',
+                display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'inherit',
+              }}
+            >
+              {loadingBestTime ? <><Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} /> Analyzing...</> : <><Clock size={14} /> Find Best Time</>}
+            </button>
+          </div>
+          {!onlineData?.length && !bestTime && (
+            <div style={{ color: 'var(--text-secondary)', fontSize: 13, fontWeight: 600, padding: '8px 0' }}>Online follower heatmap data required. Hit Sync to load it.</div>
+          )}
+          {onlineData?.length > 0 && !bestTime && !loadingBestTime && (
+            <div style={{ color: 'var(--text-secondary)', fontSize: 13, fontWeight: 600, padding: '8px 0' }}>Click Find Best Time to analyze your audience's peak activity windows.</div>
+          )}
+          {bestTime && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div style={{ padding: 20, background: 'var(--palette-2)', border: '3px solid #000', boxShadow: '4px 4px 0 #000', gridColumn: 'span 2' }}>
+                <div style={{ fontWeight: 900, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Primary Window</div>
+                <div style={{ fontWeight: 900, fontSize: 22 }}>{bestTime.primary_window}</div>
+                <div style={{ fontWeight: 600, fontSize: 13, marginTop: 8, opacity: 0.8 }}>{bestTime.why}</div>
+              </div>
+              {bestTime.secondary_window && (
+                <div style={{ padding: 16, border: '2px solid #000', boxShadow: '3px 3px 0 #000', background: '#fafafa' }}>
+                  <div style={{ fontWeight: 900, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Secondary Window</div>
+                  <div style={{ fontWeight: 700, fontSize: 14 }}>{bestTime.secondary_window}</div>
+                </div>
+              )}
+              <div style={{ padding: 16, border: '2px solid #000', boxShadow: '3px 3px 0 #000', background: '#fafafa' }}>
+                <div style={{ fontWeight: 900, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Confidence</div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: bestTime.confidence === 'high' ? 'var(--success)' : bestTime.confidence === 'low' ? 'var(--danger)' : 'var(--text-primary)' }}>
+                  {bestTime.confidence?.toUpperCase()}
+                </div>
+              </div>
+              {bestTime.data_note && (
+                <div style={{ gridColumn: 'span 2', fontSize: 12, color: 'var(--text-secondary)', fontStyle: 'italic', fontWeight: 600 }}>⚠ {bestTime.data_note}</div>
+              )}
+            </div>
+          )}
+        </motion.div>
+
+        {/* AI Engagement Health Diagnosis */}
+        <motion.div variants={item} className="full-width-card brutal-panel" style={{ padding: '32px 40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: engDiagnosis ? 24 : 0 }}>
+            <div>
+              <div className="chart-title">AI Engagement Health Diagnosis</div>
+              <div className="chart-subtitle">Detects drops, diagnoses causes, gives one prioritized action</div>
+            </div>
+            <button
+              onClick={handleEngagementDiagnosis}
+              disabled={loadingDiagnosis}
+              style={{
+                padding: '10px 20px', background: loadingDiagnosis ? '#ccc' : 'var(--palette-3)',
+                border: '2px solid #000', boxShadow: loadingDiagnosis ? 'none' : '3px 3px 0 #000',
+                fontWeight: 900, fontSize: 12, textTransform: 'uppercase',
+                cursor: loadingDiagnosis ? 'not-allowed' : 'pointer',
+                display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'inherit',
+              }}
+            >
+              {loadingDiagnosis ? <><Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} /> Diagnosing...</> : <><Activity size={14} /> Run Diagnosis</>}
+            </button>
+          </div>
+          {!engDiagnosis && !loadingDiagnosis && (
+            <div style={{ color: 'var(--text-secondary)', fontSize: 13, fontWeight: 600, padding: '8px 0' }}>
+              Click Run Diagnosis to assess your current engagement health and get one prioritized action.
+            </div>
+          )}
+          {engDiagnosis && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <div style={{ padding: '10px 18px', border: '2px solid #000', fontWeight: 900, fontSize: 13, background: engDiagnosis.status === 'healthy' || engDiagnosis.status === 'recovering' ? 'var(--palette-3)' : engDiagnosis.status === 'declining' ? '#ffe5e5' : 'var(--palette-1)' }}>
+                  Status: {engDiagnosis.status?.toUpperCase()}
+                </div>
+                <div style={{ padding: '10px 18px', border: '2px solid #000', fontWeight: 700, fontSize: 13, background: '#fafafa' }}>
+                  Avg ER: {engDiagnosis.engagement_rate}
+                </div>
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.6 }}>{engDiagnosis.trend_summary}</div>
+              {engDiagnosis.likely_cause && (
+                <div style={{ padding: 16, border: '2px solid #000', boxShadow: '3px 3px 0 #000', background: '#fffbe6' }}>
+                  <div style={{ fontWeight: 900, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Likely Cause</div>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{engDiagnosis.likely_cause}</div>
+                </div>
+              )}
+              <div style={{ padding: 20, background: 'var(--palette-2)', border: '3px solid #000', boxShadow: '4px 4px 0 #000' }}>
+                <div style={{ fontWeight: 900, fontSize: 11, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>One Action Now</div>
+                <div style={{ fontWeight: 800, fontSize: 15 }}>{engDiagnosis.action}</div>
+              </div>
+            </div>
+          )}
+        </motion.div>
+
       </motion.div>
     </div>
   );
