@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import TopBar from '../components/Layout/TopBar';
 import { fetchPostComments, likeComment } from '../services/instagramApi';
 import { analyzePostVibe, explainPostPerformance, isGeminiConfigured } from '../services/geminiApi';
+import { renderMarkdown } from '../utils/renderMarkdown';
 import toast from 'react-hot-toast';
 
 const container = {
@@ -258,9 +259,10 @@ export default function PostDetail() {
               </div>
             )}
             {perfExplain && (
-              <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.8, whiteSpace: 'pre-wrap', borderLeft: '4px solid var(--palette-2)', paddingLeft: 20 }}>
-                {perfExplain}
-              </div>
+              <div
+                style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.8, borderLeft: '4px solid var(--palette-2)', paddingLeft: 20 }}
+                dangerouslySetInnerHTML={{ __html: renderMarkdown(perfExplain) }}
+              />
             )}
           </div>
         </motion.div>
