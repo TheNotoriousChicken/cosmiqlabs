@@ -183,8 +183,21 @@ export default function PostDetail() {
               <p style={{ fontSize: 16, lineHeight: 1.8, color: '#000', fontWeight: 600, whiteSpace: 'pre-wrap' }}>
                 {post.caption || 'No caption.'}
               </p>
-              
-              <div style={{ marginTop: 32, paddingTop: 32, borderTop: '3px solid #000' }}>
+
+              {/* Posted timestamp */}
+              <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                <div style={{ padding: '6px 14px', background: '#000', color: '#fff', fontWeight: 900, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  {new Date(post.timestamp).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
+                </div>
+                <div style={{ padding: '6px 14px', border: '2px solid #000', fontWeight: 800, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5, fontFamily: 'var(--font-mono)' }}>
+                  {new Date(post.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}
+                </div>
+                <div style={{ padding: '6px 12px', border: '2px solid #000', fontWeight: 700, fontSize: 11, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                  {post.media_type?.replace('_', ' ')}
+                </div>
+              </div>
+
+              <div style={{ marginTop: 24, paddingTop: 24, borderTop: '3px solid #000' }}>
                 <a 
                   href={post.permalink} 
                   target="_blank" 
