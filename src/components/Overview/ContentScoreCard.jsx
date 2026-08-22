@@ -1,4 +1,4 @@
-﻿import { useInstagramData } from '../../hooks/useInstagramData';
+import { useInstagramData } from '../../hooks/useInstagramData';
 import { motion } from 'framer-motion';
 import { BarChart2 } from 'lucide-react';
 
@@ -76,7 +76,7 @@ export default function ContentScoreCard() {
       </div>
 
       {/* Scores grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${scores.length}, 1fr)` }}>
+      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${scores.length}, 1fr)`, borderTop: '3px solid #000' }}>
         {scores.map((s, i) => {
           const v = verdict(s.avgEr, maxEr);
           const barPct = maxEr > 0 ? (s.avgEr / maxEr) * 100 : 0;

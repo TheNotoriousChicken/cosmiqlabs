@@ -46,10 +46,8 @@ export default function Overview() {
         animate="show"
       >
         {/* At-a-Glance Widgets */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-          <TopPostOfWeek />
-          <ContentScoreCard />
-        </div>
+        <TopPostOfWeek />
+        <ContentScoreCard />
 
         {/* Profile Hero */}
         <motion.div variants={item} className="full-width-card brutal-panel" style={{ padding: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
