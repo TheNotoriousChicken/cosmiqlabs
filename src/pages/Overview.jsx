@@ -7,7 +7,8 @@ import { useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
-import MorningBrief from '../components/AI/MorningBrief';
+import TopPostOfWeek from '../components/Overview/TopPostOfWeek';
+import ContentScoreCard from '../components/Overview/ContentScoreCard';
 
 const container = {
   hidden: { opacity: 0 },
@@ -44,7 +45,11 @@ export default function Overview() {
         initial="hidden"
         animate="show"
       >
-        <MorningBrief />
+        {/* At-a-Glance Widgets */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          <TopPostOfWeek />
+          <ContentScoreCard />
+        </div>
 
         {/* Profile Hero */}
         <motion.div variants={item} className="full-width-card brutal-panel" style={{ padding: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
