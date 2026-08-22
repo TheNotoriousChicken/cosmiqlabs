@@ -1,6 +1,6 @@
 import { useInstagramData } from '../../hooks/useInstagramData';
 import { motion } from 'framer-motion';
-import { BarChart2 } from 'lucide-react';
+import { BarChart2, Film, Video, Camera, Layers } from 'lucide-react';
 
 const TYPE_LABEL = {
   REEL: 'Reels',
@@ -9,11 +9,11 @@ const TYPE_LABEL = {
   CAROUSEL_ALBUM: 'Carousels',
 };
 
-const TYPE_EMOJI = {
-  REEL: '🎬',
-  VIDEO: '📹',
-  IMAGE: '📷',
-  CAROUSEL_ALBUM: '🗂️',
+const TYPE_ICON = {
+  REEL:           Film,
+  VIDEO:          Video,
+  IMAGE:          Camera,
+  CAROUSEL_ALBUM: Layers,
 };
 
 const PALETTE = ['var(--palette-1)', 'var(--palette-2)', 'var(--palette-3)', 'var(--palette-4)'];
@@ -80,6 +80,7 @@ export default function ContentScoreCard() {
         {scores.map((s, i) => {
           const v = verdict(s.avgEr, maxEr);
           const barPct = maxEr > 0 ? (s.avgEr / maxEr) * 100 : 0;
+          const Icon = TYPE_ICON[s.type] || Film;
           return (
             <div key={s.type} style={{
               padding: '20px 24px',
@@ -90,8 +91,8 @@ export default function ContentScoreCard() {
               {/* Type header */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
-                  <div style={{ fontSize: 22 }}>{TYPE_EMOJI[s.type] || '📦'}</div>
-                  <div style={{ fontWeight: 900, fontSize: 14, textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 4 }}>
+                  <Icon size={26} strokeWidth={2} style={{ marginBottom: 6 }} />
+                  <div style={{ fontWeight: 900, fontSize: 14, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                     {TYPE_LABEL[s.type] || s.type}
                   </div>
                   <div style={{ fontWeight: 600, fontSize: 11, color: 'var(--text-secondary)' }}>{s.count} posts</div>
