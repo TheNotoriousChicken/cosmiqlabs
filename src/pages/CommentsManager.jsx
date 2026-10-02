@@ -16,7 +16,7 @@ const item = {
 };
 
 export default function CommentsManager() {
-  const { filteredPosts } = useInstagramData();
+  const { posts, filteredPosts } = useInstagramData();
   const { accessToken } = useAppStore();
 
   // { commentId → { comment, post } }
@@ -43,13 +43,12 @@ export default function CommentsManager() {
     persistLike(id);
   };
 
-  // Fetch comments from latest N posts
+  // Fetch comments from ALL posts regardless of date filter
   const fetchAll = useCallback(async () => {
-    if (!accessToken || !filteredPosts.length) return;
+    if (!accessToken || !posts.length) return;
     setLoading(true);
     setAllComments([]);
 
-    const posts = filteredPosts;
     const results = [];
 
     await Promise.allSettled(
@@ -67,7 +66,7 @@ export default function CommentsManager() {
     results.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     setAllComments(results);
     setLoading(false);
-  }, [accessToken, filteredPosts, likedIds]);
+  }, [accessToken, posts, likedIds]);
 
   useEffect(() => {
     fetchAll();
@@ -132,7 +131,7 @@ export default function CommentsManager() {
           <div style={{ flex: 1 }}>
             <div className="chart-title" style={{ marginBottom: 2 }}>Comments Manager</div>
             <div className="chart-subtitle">
-              {loading ? 'Scanning posts…' : `${allComments.length} unactioned comment${allComments.length !== 1 ? 's' : ''} across all ${filteredPosts.length} posts`}
+              {loading ? 'Scanning posts…' : `${allComments.length} unactioned comment${allComments.length !== 1 ? 's' : ''} across all ${posts.length} posts`}
             </div>
           </div>
 
