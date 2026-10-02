@@ -10,6 +10,7 @@ import Demographics from './pages/Demographics';
 import Settings from './pages/Settings';
 import PostDetail from './pages/PostDetail';
 import CaptionGenerator from './pages/CaptionGenerator';
+import CommentsManager from './pages/CommentsManager';
 import { useEffect } from 'react';
 import { useAppStore } from './store/useAppStore';
 import { useInstagramData } from './hooks/useInstagramData';
@@ -80,8 +81,9 @@ export default function App() {
             <Route path="/followers"  element={<FollowerAnalytics />} />
             <Route path="/engagement" element={<EngagementAnalytics />} />
             <Route path="/demographics" element={<Demographics />} />
-            <Route path="/settings"   element={<Settings />} />
-            <Route path="/caption"    element={<CaptionGenerator />} />
+            <Route path="/settings"     element={<Settings />} />
+            <Route path="/caption"      element={<CaptionGenerator />} />
+            <Route path="/comments"     element={<CommentsManager />} />
           </Routes>
         </main>
         <MobileNav />

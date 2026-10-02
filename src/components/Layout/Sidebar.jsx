@@ -1,17 +1,18 @@
 import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard, Zap, Users, BarChart2, Settings, Camera, Globe, Sparkles
+  LayoutDashboard, Zap, Users, BarChart2, Settings, Camera, Globe, Sparkles, MessageCircle
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import { motion } from 'framer-motion';
 
 const NAV = [
-  { to: '/',           icon: LayoutDashboard, label: 'Overview',    end: true },
-  { to: '/content',    icon: Zap,             label: 'Top Content', end: false },
-  { to: '/followers',  icon: Users,           label: 'Followers',   end: false },
-  { to: '/demographics', icon: Globe,         label: 'Demographics',end: false },
-  { to: '/engagement', icon: BarChart2,       label: 'Engagement',  end: false },
-  { to: '/caption',    icon: Sparkles,        label: 'AI Caption',  end: false },
+  { to: '/',             icon: LayoutDashboard, label: 'Overview',    end: true },
+  { to: '/content',      icon: Zap,             label: 'Top Content', end: false },
+  { to: '/followers',    icon: Users,           label: 'Followers',   end: false },
+  { to: '/demographics', icon: Globe,           label: 'Demographics',end: false },
+  { to: '/engagement',   icon: BarChart2,       label: 'Engagement',  end: false },
+  { to: '/comments',     icon: MessageCircle,   label: 'Comments',    end: false },
+  { to: '/caption',      icon: Sparkles,        label: 'AI Caption',  end: false },
 ];
 
 export default function Sidebar() {
