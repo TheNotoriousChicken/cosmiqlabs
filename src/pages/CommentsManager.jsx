@@ -6,8 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Loader2, RefreshCw, MessageCircle, CheckCheck, User, Image } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const POSTS_TO_SCAN = 15; // scan latest N posts for comments
-
 const container = {
   hidden: { opacity: 0 },
   show:   { opacity: 1, transition: { staggerChildren: 0.04 } },
@@ -51,7 +49,7 @@ export default function CommentsManager() {
     setLoading(true);
     setAllComments([]);
 
-    const posts = filteredPosts.slice(0, POSTS_TO_SCAN);
+    const posts = filteredPosts;
     const results = [];
 
     await Promise.allSettled(
@@ -134,7 +132,7 @@ export default function CommentsManager() {
           <div style={{ flex: 1 }}>
             <div className="chart-title" style={{ marginBottom: 2 }}>Comments Manager</div>
             <div className="chart-subtitle">
-              {loading ? 'Scanning posts…' : `${allComments.length} unactioned comment${allComments.length !== 1 ? 's' : ''} across last ${POSTS_TO_SCAN} posts`}
+              {loading ? 'Scanning posts…' : `${allComments.length} unactioned comment${allComments.length !== 1 ? 's' : ''} across all ${filteredPosts.length} posts`}
             </div>
           </div>
 
@@ -194,7 +192,7 @@ export default function CommentsManager() {
             style={{ padding: '60px 40px', textAlign: 'center' }}>
             <MessageCircle size={40} style={{ opacity: 0.2, marginBottom: 16 }} />
             <div className="chart-title">All caught up</div>
-            <div className="chart-subtitle">No unactioned comments across your last {POSTS_TO_SCAN} posts.</div>
+            <div className="chart-subtitle">No unactioned comments across all your posts.</div>
           </motion.div>
         )}
 
